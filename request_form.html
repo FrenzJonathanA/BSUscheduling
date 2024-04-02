@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheduling Form</title>
+    <link rel="stylesheet" href="scss/style.scss">
+</head>
+
+<body>
+    <div class="background-image"></div>
+    <div class="header">
+        <div class="container">
+            <div class="header-wrapper">
+                <div class="univ-head">
+                    <div class="logo">
+                        <img src="static/image/bsu_logo.png" alt="Logo">
+                    </div>
+    
+                    <div class="site-name">
+                        <h1>BATANGAS STATE UNIVERSITY</h1>
+                        <h4>The National Engineering University</h4>
+                    </div>
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search...">
+                    <button type="submit">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="request">
+        <div class="container">
+            <div class="req-wrapper">
+                <h2>Scheduling Form</h2>
+                <form id="schedule-form" action="request_sched.php" method="post">
+                    <div class="form-group">
+                        <label for="event-name">Event Name:</label>
+                        <input type="text" id="event-name" name="event_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-purpose">Event Purpose:</label>
+                        <textarea id="event-purpose" name="event_purpose" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="start-date">Start Date and Time:</label>
+                        <input type="datetime-local" id="start-date" name="start_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end-date">End Date and Time:</label>
+                        <input type="datetime-local" id="end-date" name="end_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="participants">Participants:</label>
+                        <input type="text" id="participants" name="participants" required>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
