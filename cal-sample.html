@@ -1,0 +1,272 @@
+<?php 
+
+    $pageTitle = "Calendar Dashboard";
+
+     include('header.php'); 
+
+?>
+
+   
+    <style>
+        .calendar-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: #007bff; /* Set background color for calendar header */
+            color: #fff; /* Set text color for calendar header */
+            padding: 10px; /* Add padding to the calendar header */
+            text-align: center;
+        }
+
+        .month-head, .year-head{
+            button{
+                background-color: transparent;
+                border: none;
+            }
+        }
+
+        .month, .year {
+            font-size: 20px;
+            font-weight: bold;
+            
+        }
+        .calendar-body{
+            border: 1px solid #ccc;
+        }
+
+        #calendar {
+            display: grid;
+            /* grid-template-columns: repeat(7, 1fr); */
+            font-weight: 600;
+            cursor: pointer;
+            color: rgb(104, 104, 104);
+            width: 100%;
+        }
+
+
+        .today {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .today h2 {
+            margin-bottom: 5px;
+        }
+
+        #currentDateTime {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* CSS for calendar cells */
+        #calendar td {
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+
+        /* CSS for hover effect */
+        #calendar td:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* CSS for active effect */
+        #calendar td.active {
+            background-color: #007bff; /* Change background color when clicked */
+            color: #fff; /* Change text color when clicked */
+        }
+        /* CSS for emphasizing the current date */
+        #calendar td.current-date {
+            background-color: #007bff; /* Change background color of the current date */
+            color: #fff; /* Change text color of the current date */
+        }
+
+
+    
+    </style>
+
+
+<body>
+    <!-- Scheduling Form -->
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <div class="month-head" style="display: flex; gap: 5px;">
+                <button id="prevMonth"><i class="fa-solid fa-caret-left" ></i></button>
+                <div class="month" id="currentMonth"></div>
+                <button id="nextMonth"><i class="fa-solid fa-caret-right"></i></i></button>
+            </div>
+            <div class="year-head" style="display: flex; gap: 5px;">
+                <button id="prevYear"><i class="fa-solid fa-caret-left"></i></i></button>
+                <div class="year" id="currentYear"></div>
+                <button id="nextYear"><i class="fa-solid fa-caret-right"></i></i></button>
+            </div>
+        </div>
+        <div class="calendar-body">
+            <div id="calendar">
+            
+            </div>
+            <div class="today">
+                <h2>TODAY:</h2>
+                <div id="currentDateTime"></div>
+            </div>
+        </div>
+
+    </div>'
+    
+    <?php 
+
+    include('footer.php'); 
+
+    ?>'
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var currentDate = new Date();
+    var currentYear = currentDate.getFullYear();
+    var currentMonth = currentDate.getMonth();
+    var currentDay = currentDate.getDate(); // Get the current day
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var calendarEl = document.getElementById('calendar');
+    var currentMonthEl = document.getElementById('currentMonth');
+    var currentYearEl = document.getElementById('currentYear');
+    var currentDateTimeEl = document.getElementById('currentDateTime');
+
+    function renderCalendar(year, month) {
+        var daysInMonth = new Date(year, month + 1, 0).getDate();
+        var firstDayOfMonth = new Date(year, month, 1).getDay();
+        var html = '<table>';
+        html += '<thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>';
+        html += '<tbody>';
+
+        var dayCounter = 1;
+        for (var i = 0; i < 6; i++) {
+            html += '<tr>';
+            for (var j = 0; j < 7; j++) {
+                if (i === 0 && j < firstDayOfMonth) {
+                    html += '<td></td>';
+                } else if (dayCounter > daysInMonth) {
+                    break;
+                } else {
+                    var date = new Date(year, month, dayCounter);
+                    var classes = '';
+                    if (date.getDate() === currentDay && date.getMonth() === currentMonth && date.getFullYear() === currentYear) {
+                        classes = 'current-date';
+                    }
+                    html += '<td class="' + classes + '" data-date="' + date.toISOString().split('T')[0] + '">' + dayCounter + '</td>';
+                    dayCounter++;
+                }
+            }
+            html += '</tr>';
+            if (dayCounter > daysInMonth) {
+                break;
+            }
+        }
+        html += '</tbody></table>';
+        calendarEl.innerHTML = html;
+    }
+
+    function updateCurrentDateDisplay() {
+        currentMonthEl.textContent = months[currentMonth];
+        currentYearEl.textContent = currentYear;
+
+        var dayOfWeek = days[currentDate.getDay()];
+        var dateString = currentDate.toDateString();
+        var timeString = currentDate.toLocaleTimeString();
+        currentDateTimeEl.textContent = dayOfWeek + ', ' + dateString + ' ' + timeString;
+    }
+
+    renderCalendar(currentYear, currentMonth);
+    updateCurrentDateDisplay();
+
+    // Update time every second
+    setInterval(function() {
+        currentDate = new Date();
+        updateCurrentDateDisplay();
+        emphasizeCurrentDate(); // Call function to emphasize current date
+    }, 1000);
+
+    document.getElementById('prevYear').addEventListener('click', function() {
+        currentYear--;
+        renderCalendar(currentYear, currentMonth);
+    });
+
+    document.getElementById('prevMonth').addEventListener('click', function() {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar(currentYear, currentMonth);
+    });
+
+    document.getElementById('nextMonth').addEventListener('click', function() {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        renderCalendar(currentYear, currentMonth);
+    });
+
+    document.getElementById('nextYear').addEventListener('click', function() {
+        currentYear++;
+        renderCalendar(currentYear, currentMonth);
+    });
+
+    // Handle click event on calendar cells
+    calendarEl.addEventListener('click', function(event) {
+        if (event.target.tagName === 'TD') {
+            var selectedDate = new Date(event.target.getAttribute('data-date'));
+            selectedDate.setUTCHours(0, 0, 0, 0); // Set time to midnight in UTC
+            console.log('Selected Date:', selectedDate.toISOString()); // Log the selected date to console
+            fetchEvents(selectedDate.toISOString());
+        }
+    });
+
+
+    // Function to fetch events for the selected date
+    function fetchEvents(selectedDate) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'fetch_events.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.error) {
+                    console.error(response.error);
+                } else {
+                    // Display fetched events
+                    console.log(response);
+                    // You can update the UI to display the fetched events here
+                }
+            }
+        };
+        xhr.send('selectedDate=' + selectedDate);
+    }
+
+    // Function to emphasize the current date
+    function emphasizeCurrentDate() {
+        var cells = document.querySelectorAll('#calendar td');
+        cells.forEach(function(cell) {
+            cell.classList.remove('current-date'); // Remove existing emphasis
+            var date = new Date(cell.getAttribute('data-date'));
+            if (date.getDate() === currentDay && date.getMonth() === currentMonth && date.getFullYear() === currentYear) {
+                cell.classList.add('current-date'); // Add emphasis to current date
+            }
+        });
+    }
+});
+
+
+</script>
+</body>
+</html>
