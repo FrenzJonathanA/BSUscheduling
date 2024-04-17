@@ -48,8 +48,8 @@ include('header.php');
         </div>
         <div class="month-list"></div>
       </div>
+      <!-- Events container -->
       <div class="events-container" id="eventDetailsTableContainer"></div>
-
     </div>
   </div>
 
@@ -58,7 +58,7 @@ include('header.php');
 include('footer.php'); 
 
 ?>
-<!-- <script>
+<script>
   // Function to fetch event details based on event code
   function fetchEventDetails(eventCode) {
       fetch('search.php?event_code=' + eventCode)
@@ -95,48 +95,7 @@ include('footer.php');
   // Example: Fetch event details based on event code 'SCH1711935431'
   // fetchEventDetails('SCH1711935431');
 
-</script> -->
-  <script>
-        $(document).ready(function() {
-            // Submit form to apply filters
-            $('#filter-form').submit(function(event) {
-                event.preventDefault(); // Prevent default form submission
-                var formData = $(this).serialize(); // Serialize form data
-                fetchEventDetails(formData); // Call function to fetch event details
-            });
-            
-            // Function to fetch and display event details based on filters
-            function fetchEventDetails(formData) {
-                $.ajax({
-                    url: 'event_search.php',
-                    type: 'GET',
-                    data: formData,
-                    success: function(response) {
-                        $('#eventDetailsTable tbody').html(response);
-                    },
-                    error: function() {
-                        console.log('Error occurred while fetching event details.');
-                    }
-                });
-            }
+</script>
 
-            // Function to populate facility dropdown menu
-            function populateFacilityDropdown() {
-                $.ajax({
-                    url: 'facility_fetch.php', // Adjust URL based on your actual PHP file
-                    type: 'GET',
-                    success: function(response) {
-                        $('#filter-facility').html(response);
-                    },
-                    error: function() {
-                        console.log('Error occurred while fetching facility options.');
-                    }
-                });
-            }
-
-            // Initial fetch to populate facility dropdown menu
-            populateFacilityDropdown();
-        });
-  </script>
 </body>
 </html>

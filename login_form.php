@@ -37,7 +37,7 @@
         include('header.php'); 
     
     ?> 
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <div class="log-form">
         <div class="container">
             <div class="log-wrapper">
@@ -52,8 +52,16 @@
                         <input type="password" id="password" name="password" required>
                     </div>
                     <button type="submit">Login</button>
+                    <div class="text-center">
+                        <a href="forgot_password.php">Forgot Password?</a>
+                    </div>
                 </form>
-                
+                <div class="text-center">
+                    <a href="registration.php">Don't have an account? Sign Up</a>
+                </div>
+                <div class="text-center">
+                    <a href="cal-sample.php">View Calendar</a>
+                </div>
             </div>     
         </div>
     </div>

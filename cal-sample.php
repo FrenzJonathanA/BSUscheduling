@@ -9,7 +9,7 @@
    
     <style>
         .calendar-container {
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
             padding: 2% 0px 0px;
             top: 10%;
@@ -20,11 +20,11 @@
 
         .calendar-wrapper{
             height: max-content;
-            width: 100%;;
+            margin: 0 auto;
             background-color: white;
             border-radius: 25px;
-            overflow: hidden;
-            padding: 30px 50px 30px 50px;
+            //overflow: hidden;
+            padding: 30px 50px;
             box-shadow: var(--shadow);
         }
 
@@ -133,41 +133,163 @@
 <body>
     <!-- Scheduling Form -->
     <div class="calendar">
-    <div class="calendar-container">
-        <div class="calendar-wrapper">
-            <div class="calendar-header">
-                <div class="month-head" style="display: flex; gap: 5px;">
-                    <button id="prevMonth"><i class="fa-solid fa-caret-left" ></i></button>
-                    <div class="month" id="currentMonth"></div>
-                    <button id="nextMonth"><i class="fa-solid fa-caret-right"></i></i></button>
+        <div class="calendar-container">
+            <div class="calendar-wrapper">
+                <div class="calendar-header">
+                    <div class="month-head" style="display: flex; gap: 5px;">
+                        <button id="prevMonth"><i class="fa-solid fa-caret-left" ></i></button>
+                        <div class="month" id="currentMonth"></div>
+                        <button id="nextMonth"><i class="fa-solid fa-caret-right"></i></i></button>
+                    </div>
+                    <div class="year-head" style="display: flex; gap: 5px;">
+                        <button id="prevYear"><i class="fa-solid fa-caret-left"></i></i></button>
+                        <div class="year" id="currentYear"></div>
+                        <button id="nextYear"><i class="fa-solid fa-caret-right"></i></i></button>
+                    </div>
                 </div>
-                <div class="year-head" style="display: flex; gap: 5px;">
-                    <button id="prevYear"><i class="fa-solid fa-caret-left"></i></i></button>
-                    <div class="year" id="currentYear"></div>
-                    <button id="nextYear"><i class="fa-solid fa-caret-right"></i></i></button>
-                </div>
-            </div>
-            <div class="calendar-body">
-                <div id="calendar">
-                
-                </div>
-                <div class="today">
-                    <h2>TODAY:</h2>
-                    <div id="currentDateTime"></div>
+                <div class="calendar-body">
+                    <div id="calendar">
+                    
+                    </div>
+                    <div class="today">
+                        <h2>TODAY:</h2>
+                        <div id="currentDateTime"></div>
+                    </div>
                 </div>
             </div>
         </div>
-
-
+    </div>
+    <div class="events-container">
+        <!-- Event details container -->
     </div>
 
-    </div>
+
+
+
+
+
+
+
+
+    <style>
+        /* CSS for the carousel container */
+        #carousel-container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        /* CSS for individual carousel items */
+        .carousel-item {
+            background-color: #f0f0f0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer; /* Change cursor to pointer when hovering over carousel items */
+            max-width: 50%;
+            margin: 50px auto;
+        }
+
+        .carousel-item h3 {
+            margin-top: 0;
+        }
+
+        .carousel-item p {
+            margin: 5px 0;
+        }
+
+        /* CSS for full event details */
+        .event-details {
+            display: none; /* Initially hide event details */
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-details.show {
+            display: block; /* Show event details when .show class is added */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="carousel-container"></div>
+
+    <!-- Add any necessary JavaScript code here -->
+    <script>
+        // Function to fetch events from the server
+        const fetchEvents = async (selectedDate) => {
+            try {
+                // Send an AJAX request to fetch events for the selected date
+                const response = await fetch('fetch_events.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `selectedDate=${selectedDate}`,
+                });
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching events:', error);
+                return [];
+            }
+        };
+
+        // Function to display events in the carousel
+        const displayEvents = (events) => {
+            const carouselContainer = document.getElementById('carousel-container');
+            if (events.length > 0) {
+                // Clear existing content
+                carouselContainer.innerHTML = '';
+
+                // Iterate over events and create carousel items
+                events.forEach(event => {
+                    const carouselItem = document.createElement('div');
+                    carouselItem.classList.add('carousel-item');
+                    carouselItem.innerHTML = `
+                        <h3>${event.event_name}</h3>
+                        <p>Event Code: ${event.event_code}</p>
+                        <p>Duration: ${event.start_from} - ${event.end_to}</p>
+                        <p>Status: ${event.event_status}</p>
+                        <!-- Add other event details as needed -->
+                        <div class="event-details">
+                            <p>Event Purpose: ${event.event_purpose}</p>
+                            <p>Participants: ${event.participants}</p>
+                            <p>Host: ${event.first_name} ${event.last_name}</p>
+                            <p>Facility: ${event.facility_name}</p>
+                            <!-- Add other event details as needed -->
+                        </div>
+                    `;
+                    carouselContainer.appendChild(carouselItem);
+
+                    // Event listener to toggle event details on click
+                    carouselItem.addEventListener('click', () => {
+                        const eventDetails = carouselItem.querySelector('.event-details');
+                        eventDetails.classList.toggle('show');
+                    });
+                });
+            } else {
+                // No events scheduled
+                carouselContainer.innerHTML = '<p>No events scheduled for this date.</p>';
+            }
+        };
+
+        // Get the current local date
+        const currentDate = new Date();
+        const currentDateString = currentDate.toISOString().split('T')[0];
+
+        // Fetch events and display them in the carousel
+        fetchEvents(currentDateString).then(displayEvents);
+    </script>
+
+
 
     
     <?php 
-
     include('footer.php'); 
-
     ?>'
 
 
@@ -201,7 +323,7 @@
                         break;
                     } else {
                         var date = new Date(year, month, dayCounter);
-                        var formattedDate = date.toISOString().split('T')[0]; // Format date for data-date attribute
+                        var formattedDate = date.toLocaleString().split('T')[0]; // Format date for data-date attribute
                         var classes = '';
                         if (date.getDate() === currentDay && date.getMonth() === currentMonth && date.getFullYear() === currentYear) {
                             classes = 'current-date';
@@ -225,7 +347,7 @@
             currentYearEl.textContent = currentYear;
 
             var dayOfWeek = days[currentDate.getDay()];
-            var dateString = currentDate.toDateString();
+            var dateString = currentDate.toLocaleDateString();
             var timeString = currentDate.toLocaleTimeString();
             currentDateTimeEl.innerHTML = dayOfWeek + ', ' + dateString + '<br><span class="time">' + timeString  + '</span>';
         }
@@ -268,57 +390,17 @@
             renderCalendar(currentYear, currentMonth);
         });
 
+
         // Handle click event on calendar cells
         calendarEl.addEventListener('click', function(event) {
             if (event.target.tagName === 'TD') {
                 var selectedDate = new Date(event.target.getAttribute('data-date'));
-                selectedDate.setUTCHours(0, 0, 0, 0); // Set time to midnight in UTC
-                console.log('Selected Date:', selectedDate.toISOString()); // Log selected date
-                fetchEvents(selectedDate.toISOString()); // Fetch events for selected date
+                //selectedDate.setUTCHours(0, 0, 0, 0); // Set time to midnight in UTC
+                console.log('Selected Date:', selectedDate.toLocaleDateString()); // Log selected date
+                fetchEvents(selectedDate.toLocaleString()); // Fetch events for selected date
             }
         });
 
-        // Fetch events based on selected date
-        function fetchEvents(selectedDate) {
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'fetch_events.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    if (response.error) {
-                        console.error(response.error);
-                    } else {
-                        console.log(response); // Log fetched events
-                        // Update UI to display fetched events
-                        displayEvents(response); // Call function to display fetched events
-                    }
-                }
-            };
-            xhr.send('selectedDate=' + selectedDate);
-        }
-
-        // Function to display fetched events in the UI
-        function displayEvents(events) {
-            // Check if events array is empty
-            if (events.length === 0) {
-                // If no events, display a message
-                alert('No events scheduled for the selected date.');
-                // You can also update the UI to display a message instead of an alert
-            } else {
-                // If events are present, you can update the UI to display them
-                // For example, you can append the events to a <div> or update a table
-                var eventsList = document.getElementById('events-list');
-                eventsList.innerHTML = ''; // Clear previous events
-                events.forEach(function(event) {
-                    // Create HTML elements to display event details
-                    var eventItem = document.createElement('div');
-                    eventItem.textContent = event.event_name + ' - ' + event.start_from + ' to ' + event.end_to;
-                    // Append event item to the events list
-                    eventsList.appendChild(eventItem);
-                });
-            }
-        }
 
         // Emphasize current date in the calendar
         function emphasizeCurrentDate() {
@@ -331,7 +413,76 @@
                 }
             });
         }
-        
+
+
+        // Function to fetch events from the server
+        function fetchEvents(selectedDate) {
+            // Send a POST request to fetch_events.php with the selected date
+            $.post('fetch_events.php', { selectedDate: selectedDate }, function(data) {
+                // Print out the JSON response for debugging
+                console.log(data);
+
+                try {
+                    // Parse the JSON response
+                    var events = JSON.parse(data);
+
+                    // Display the fetched events in the UI
+                    displayEvents(events, selectedDate);
+                } catch (error) {
+                    // If there was an error parsing the JSON response, display an error message
+                    alert('Error: ' + error.message);
+                }
+            });
+        }
+
+        // Fetch events and display them in the carousel
+        fetchEvents(currentDateString).then(displayEvents);
+
+        const displayEvents = (events, selectedDate) => {
+            const carouselContainer = document.getElementById('carousel-container');
+            if (events.length > 0) {
+                // Clear existing content
+                carouselContainer.innerHTML = '';
+
+                // Iterate over events and create carousel items
+                events.forEach(event => {
+                    const carouselItem = document.createElement('div');
+                    carouselItem.classList.add('carousel-item');
+                    carouselItem.innerHTML = `
+                        <h3>${event.event_name}</h3>
+                        <p>Event Code: ${event.event_code}</p>
+                        <p>Duration: ${event.start_from} - ${event.end_to}</p>
+                        <p>Status: ${event.event_status}</p>
+                        <!-- Add other event details as needed -->
+                        <div class="event-details">
+                            <p>Event Purpose: ${event.event_purpose}</p>
+                            <p>Participants: ${event.participants}</p>
+                            <p>Host: ${event.host_first_name} ${event.host_last_name}</p>
+                            <p>Facility: ${event.facility_name}</p>
+                            <!-- Add other event details as needed -->
+                        </div>
+                    `;
+                    carouselContainer.appendChild(carouselItem);
+
+                    // Event listener to toggle event details on click
+                    carouselItem.addEventListener('click', () => {
+                        const eventDetails = carouselItem.querySelector('.event-details');
+                        eventDetails.classList.toggle('show');
+                    });
+                });
+            } else {
+                // No events scheduled
+                carouselContainer.innerHTML = '<p>No events scheduled for this date.</p>';
+            }
+        };
+
+
+
+
+
+
+
+
     });
 
 

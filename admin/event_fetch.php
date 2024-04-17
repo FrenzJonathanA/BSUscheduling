@@ -68,148 +68,154 @@
 
 <script>
     $(document).ready(function() {
-        // Remove Button Click Event
-        $('.remove-button').click(function() {
-            // Confirm removal action
-            if (confirm("Are you sure you want to remove this event?")) {
-                // Get event ID from data attribute
-                var eventID = $(this).data('id');
-                // Send AJAX request to update user status
-                $.ajax({
-                    url: 'event_remove.php',
-                    type: 'POST',
-                    data: { schedule_id: eventID },
-                    success: function(response) {
-                        // Reload page or update UI as needed
-                        window.location.reload(); // Example: Reload the page after successful removal
-                    },
-                    error: function() {
-                        console.log('Error occurred while updating event status.');
-                    }
-                });
-            }
-        });
+                 // Approve Button Click Event
+                 $('.approve-button').click(function() {
+                // Confirm approval action
+                if (confirm("Are you sure you want to approve this event?")) {
+                    // Get event ID from data attribute
+                    var eventID = $(this).data('id');
+                    console.log("Event ID:", eventID);
+                    // Send AJAX request to update event status
+                    $.ajax({
+                        url: 'event_approve.php',
+                        type: 'POST',
+                        data: { event_id: eventID },
+                        success: function(response) {
+                            console.log('Approve AJAX Success:', response);
+                            // Reload page or update UI as needed
+                            window.location.reload(); // Example: Reload the page after successful approval
+                        },
+                        error: function() {
+                            console.log('Error occurred while updating event status.');
+                        }
+                    });
+                }
+            });
 
-        // Approve Button Click Event
-        $('.approve-button').click(function() {
-            // Confirm approval action
-            if (confirm("Are you sure you want to approve this event?")) {
-                // Get event ID from data attribute
-                var eventID = $(this).data('id');
-                // Send AJAX request to update event status
-                $.ajax({
-                    url: 'event_approve.php',
-                    type: 'POST',
-                    data: { schedule_id: eventID },
-                    success: function(response) {
-                        // Reload page or update UI as needed
-                        window.location.reload(); // Example: Reload the page after successful approval
-                    },
-                    error: function() {
-                        console.log('Error occurred while updating event status.');
-                    }
-                });
-            }
-        });
+            // Remove Button Click Event
+            $('.remove-button').click(function() {
+                // Confirm removal action
+                if (confirm("Are you sure you want to remove this event?")) {
+                    // Get event ID from data attribute
+                    var eventID = $(this).data('id');
+                    console.log("Event ID:", eventID); // Check if event ID is retrieved correctly
+                    // Send AJAX request to update event status
+                    // Send AJAX request to update user status
+                    $.ajax({
+                        url: 'event_remove.php',
+                        type: 'POST',
+                        data: { event_id: eventID },
+                        success: function(response) {
+                            console.log('Remove AJAX Success:', response);
+                            // Reload page or update UI as needed
+                            window.location.reload(); // Example: Reload the page after successful removal
+                        },
+                        error: function() {
+                            console.log('Error occurred while updating event status.');
+                            console.log('Remove AJAX Error: Error occurred while updating event status.');
+                        }
+                    });
+                }
+            });    
 
-        // Update button visibility based on user status
-        $('.approve-button, .remove-button').each(function() {
-            var eventStatus = $(this).closest('tr').find('.event-status').text();
-            if (eventStatus == 'approved' || eventStatus == 'declined') {
-                $(this).hide();
-            }
-        });
+            // Update button visibility based on user status
+            $('.approve-button, .remove-button').each(function() {
+                var eventStatus = $(this).closest('tr').find('.event-status').text();
+                if (eventStatus == 'approved' || eventStatus == 'declined') {
+                    $(this).hide();
+                }
+            });
 
 
         // Function to fetch and display event details based on status
-        function fetchEventDetails(status) {
-            $.ajax({
-                url: 'event_fetch.php',
-                type: 'GET',
-                data: { status: event_status },
-                success: function(response) {
-                    $('#eventDetailsTable tbody').html(response);
-                },
-                error: function() {
-                    console.log('Error occurred while fetching event details.');
-                }
-            });
-        }
+        // function fetchEventDetails(status) {
+        //     $.ajax({
+        //         url: 'event_fetch.php',
+        //         type: 'GET',
+        //         data: { status: event_status },
+        //         success: function(response) {
+        //             $('#eventDetailsTable tbody').html(response);
+        //         },
+        //         error: function() {
+        //             console.log('Error occurred while fetching event details.');
+        //         }
+        //     });
+        // }
 
-        // Function to fetch and update user counts
-        function fetchEventCounts() {
-            $.ajax({
-                url: 'event_filtering.php',
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    $('.approved-events-count').text(response.approved);
-                    $('.pending-events-count').text(response.pending);
-                    $('.declined-events-count').text(response.declined);
-                },
-                error: function() {
-                    console.log('Error occurred while fetching event counts.');
-                }
-            });
-        }
+        // // Function to fetch and update user counts
+        // function fetchEventCounts() {
+        //     $.ajax({
+        //         url: 'event_filtering.php',
+        //         type: 'GET',
+        //         dataType: 'json',
+        //         success: function(response) {
+        //             $('.approved-events-count').text(response.approved);
+        //             $('.pending-events-count').text(response.pending);
+        //             $('.declined-events-count').text(response.declined);
+        //         },
+        //         error: function() {
+        //             console.log('Error occurred while fetching event counts.');
+        //         }
+        //     });
+        // }
 
-        // Click event for "More Info" buttons
-        $('.small-box-1').click(function() {
-            var status = $(this).data('event_status');
-            fetchEventDetails(status);
-        });
+        // // Click event for "More Info" buttons
+        // $('.small-box-1').click(function() {
+        //     var status = $(this).data('event_status');
+        //     fetchEventDetails(status);
+        // });
 
         // Initial fetch for user counts
-        fetchEventCounts();
+        // fetchEventCounts();
 
         // Submit form using AJAX
-        $('#search-form').submit(function(event) {
-            event.preventDefault(); // Prevent default form submission
-            var formData = $(this).serialize(); // Serialize form data
-            fetchEventSearch(formData); // Call function to fetch event Search
-        });
+        // $('#search-form').submit(function(event) {
+        //     event.preventDefault(); // Prevent default form submission
+        //     var formData = $(this).serialize(); // Serialize form data
+        //     fetchEventSearch(formData); // Call function to fetch event Search
+        // });
 
-        // Function to fetch and display event Search based on search criteria
-        function fetchEventSearch(formData) {
-            $.ajax({
-                url: 'search.php', // PHP script handling the search
-                type: 'GET',
-                data: formData,
-                success: function(response) {
-                    $('#eventDetailsTable tbody').html(response); // Display search results in table
-                },
-                error: function() {
-                    console.log('Error occurred while fetching event details.');
-                }
-            });
-        }
+        // // Function to fetch and display event Search based on search criteria
+        // function fetchEventSearch(formData) {
+        //     $.ajax({
+        //         url: 'search.php', // PHP script handling the search
+        //         type: 'GET',
+        //         data: formData,
+        //         success: function(response) {
+        //             $('#eventDetailsTable tbody').html(response); // Display search results in table
+        //         },
+        //         error: function() {
+        //             console.log('Error occurred while fetching event details.');
+        //         }
+        //     });
+        // }
 
 
-        // Event listener for filter form submission
-        $('#filter-form').submit(function(event) {
-            event.preventDefault(); // Prevent default form submission
+        // // Event listener for filter form submission
+        // $('#filter-form').submit(function(event) {
+        //     event.preventDefault(); // Prevent default form submission
 
-            // Get filter parameters
-            var filterDate = $('#filter-date').val();
-            var facilityCode = $('#filter-facility').val();
+        //     // Get filter parameters
+        //     var filterDate = $('#filter-date').val();
+        //     var facilityCode = $('#filter-facility').val();
 
-            // AJAX request to fetch filtered events
-            $.ajax({
-                url: 'event_filter.php',
-                type: 'GET',
-                data: {
-                    'filter-date': filterDate,
-                    'facilitycode': facilityCode
-                },
-                success: function(response) {
-                    // Update the table with filtered events
-                    $('#eventDetailsTable tbody').html(response);
-                },
-                error: function() {
-                    console.log('Error occurred while fetching filtered events.');
-                }
-            });
-        });
+        //     // AJAX request to fetch filtered events
+        //     $.ajax({
+        //         url: 'event_filter.php',
+        //         type: 'GET',
+        //         data: {
+        //             'filter-date': filterDate,
+        //             'facilitycode': facilityCode
+        //         },
+        //         success: function(response) {
+        //             // Update the table with filtered events
+        //             $('#eventDetailsTable tbody').html(response);
+        //         },
+        //         error: function() {
+        //             console.log('Error occurred while fetching filtered events.');
+        //         }
+        //     });
+        // });
     });
 
 </script>

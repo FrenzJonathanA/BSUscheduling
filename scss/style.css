@@ -704,18 +704,18 @@ footer .fcontainer .footer-content .right-section .social-icons a:hover {
   right: 0%;
   width: 100%;
   margin: 0 auto;
+  min-height: 71vh;
 }
 .log-form .container .log-wrapper {
   width: 350px;
   height: -moz-max-content;
   height: max-content;
-  margin: 0 auto;
+  margin: 5% auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f9f9f9;
   align-items: center;
-  margin-top: 10%;
 }
 .log-form .container .log-wrapper h2 {
   text-align: center;
@@ -754,6 +754,169 @@ footer .fcontainer .footer-content .right-section .social-icons a:hover {
 }
 .log-form .container .log-wrapper button:hover {
   background-color: #0056b3;
+}
+
+.forgetPass-form .container {
+  max-width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  top: 10%;
+  right: 0%;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 71vh;
+}
+.forgetPass-form .container .forgetPass-wrapper {
+  width: 350px;
+  height: -moz-max-content;
+  height: max-content;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  align-items: center;
+}
+.forgetPass-form .container .forgetPass-wrapper h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+.forgetPass-form .container .forgetPass-wrapper form {
+  margin-bottom: 15px;
+}
+.forgetPass-form .container .forgetPass-wrapper form label {
+  display: block;
+  padding-bottom: 10px;
+  font-size: 18px;
+}
+.forgetPass-form .container .forgetPass-wrapper form .form-group {
+  display: flex;
+}
+.forgetPass-form .container .forgetPass-wrapper form .form-group input[type=email] {
+  width: 68%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+.reset-pass .container {
+  max-width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  top: 30%;
+  right: 0%;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 71vh;
+}
+.reset-pass .container .reset-wrapper {
+  width: 350px;
+  height: -moz-max-content;
+  height: max-content;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  align-items: center;
+}
+.reset-pass .container .reset-wrapper h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+.reset-pass .container .reset-wrapper .reset-form {
+  margin-bottom: 15px;
+}
+.reset-pass .container .reset-wrapper .reset-form .error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+.reset-pass .container .reset-wrapper .reset-form label {
+  display: block;
+  padding-bottom: 10px;
+  font-size: 18px;
+}
+.reset-pass .container .reset-wrapper .reset-form form {
+  display: flex;
+}
+.reset-pass .container .reset-wrapper .reset-form form input[type=text] {
+  width: 75%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+.newpass .container {
+  max-width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  top: 30%;
+  right: 0%;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 71vh;
+}
+.newpass .container .newpass-wrapper {
+  width: 350px;
+  height: -moz-max-content;
+  height: max-content;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  align-items: center;
+}
+.newpass .container .newpass-wrapper .reset-form {
+  margin-bottom: 15px;
+}
+.newpass .container .newpass-wrapper .reset-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+.newpass .container .newpass-wrapper .reset-form .error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+.newpass .container .newpass-wrapper .reset-form form input[type=hidden] {
+  width: 75%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+.newpass .container .newpass-wrapper .reset-form form .form-group {
+  margin-bottom: 20px;
+  text-align: center;
+}
+.newpass .container .newpass-wrapper .reset-form form .form-group label {
+  display: block;
+  padding-bottom: 10px;
+  font-size: 18px;
+}
+.newpass .container .newpass-wrapper .reset-form form .form-group input[type=password] {
+  width: 75%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+.newpass .container .newpass-wrapper .reset-form form .form-group button {
+  display: flex;
+  justify-content: center;
 }
 
 .request .container {
@@ -966,7 +1129,7 @@ footer .fcontainer .footer-content .right-section .social-icons a:hover {
   border-radius: 8px;
 }
 .event-list .container .list-wrapper .list-title h2 {
-  margin-bottom: 10px;
+  margin-bottom: 25px;
   margin-top: 0px;
   display: flex;
   justify-content: center;
@@ -990,19 +1153,38 @@ footer .fcontainer .footer-content .right-section .social-icons a:hover {
 .event-list .container .list-wrapper .list-title .filtering button i {
   margin-right: 5px;
 }
-.event-list .container .list-wrapper .list-title .filtering .search-bar {
-  display: flex;
+.event-list .container .list-wrapper .list-title .filtering .filter-bar {
   justify-content: right;
   width: 50%;
 }
-.event-list .container .list-wrapper .list-title .filtering .search-bar button {
-  padding: 8px 12px;
+.event-list .container .list-wrapper .list-title .filtering .filter-bar button {
   background-color: #555; /* Change button color */
   color: #fff; /* Change text color */
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin: 0 0;
+  height: 25px;
+}
+.event-list .container .list-wrapper .list-title .filtering .filter-bar button:hover {
+  background-color: #777;
+}
+.event-list .container .list-wrapper .list-title .filtering .filter-bar input[type=text] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.event-list .container .list-wrapper .list-title .filtering .search-bar {
+  display: flex;
+  align-items: center;
+}
+.event-list .container .list-wrapper .list-title .filtering .search-bar button {
+  background-color: #555; /* Change button color */
+  color: #fff; /* Change text color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 25px;
 }
 .event-list .container .list-wrapper .list-title .filtering .search-bar button:hover {
   background-color: #777;
@@ -1012,6 +1194,7 @@ footer .fcontainer .footer-content .right-section .social-icons a:hover {
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-right: 10px;
+  height: 9px;
 }
 .event-list .container .list-wrapper table {
   width: 56%;
@@ -1046,6 +1229,8 @@ footer .fcontainer .footer-content .right-section .social-icons a:hover {
   margin-bottom: 5px;
 }
 
+/* Base styles */
+/* For screens smaller than 768px (e.g., tablets) */
 .user-badge .container {
   max-width: 100%;
   height: -moz-max-content;

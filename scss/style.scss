@@ -770,6 +770,7 @@ footer {
     right: 0%;
     width: 100%;
     margin: 0 auto;
+    min-height: 71vh;
     .log-wrapper{
       width: 350px;
       height: max-content;
@@ -821,6 +822,235 @@ footer {
   }
 }
 
+.forgetPass-form{
+  .container{
+    max-width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    top: 10%;
+    right: 0%;
+    width: 100%;
+    margin: 0 auto;
+    min-height: 71vh;
+    .forgetPass-wrapper{
+      width: 350px;
+      height: max-content;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      align-items: center;
+      h2{
+        text-align: center;
+        margin-bottom: 20px;
+        margin-top: 10px;
+        text-transform: uppercase;
+      }
+      form{
+        margin-bottom: 15px;
+        label{
+          display: block;
+          padding-bottom: 10px;
+          font-size: 18px;
+          // font-weight: bold;
+        }
+
+        .form-group{
+          display: flex;
+          input[type="email"] {
+            width: 68%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-right: 10px;
+          }
+          
+        }
+        // button{
+        //   display: block;
+        //   margin: 15px auto;
+        //   width: 60%;
+        //   padding: 10px;
+        //   border: none;
+        //   border-radius: 3px;
+        //   background-color: #007bff;
+        //   color: #000;
+        //   cursor: pointer;
+        //   font-size: 14px;
+        //   font-weight: 900;
+        //   &:hover{
+        //     background-color: #0056b3;
+        //   }
+        // }
+      }
+    }
+  }
+}
+
+.reset-pass{
+  .container{
+    max-width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    top: 30%;
+    right: 0%;
+    width: 100%;
+    margin: 0 auto;
+    min-height: 71vh;
+    .reset-wrapper{
+      width: 350px;
+      height: max-content;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      align-items: center;
+      h2{
+        text-align: center;
+        margin-bottom: 20px;
+        margin-top: 10px;
+        text-transform: uppercase;
+      }
+      .reset-form{
+        margin-bottom: 15px;
+        .error-message {
+          color: red;
+          font-weight: bold;
+          margin-top: 10px;
+        }
+        label{
+          display: block;
+          padding-bottom: 10px;
+          font-size: 18px;
+          // font-weight: bold;
+        }
+        form{
+          display: flex;
+          input[type="text"] {
+            width: 75%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-right: 10px;
+          }
+          
+        }
+        // button{
+        //   display: block;
+        //   margin: 15px auto;
+        //   width: 60%;
+        //   padding: 10px;
+        //   border: none;
+        //   border-radius: 3px;
+        //   background-color: #007bff;
+        //   color: #000;
+        //   cursor: pointer;
+        //   font-size: 14px;
+        //   font-weight: 900;
+        //   &:hover{
+        //     background-color: #0056b3;
+        //   }
+        // }
+      }
+    }
+  }
+}
+
+.newpass{
+  .container{
+    max-width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    top: 30%;
+    right: 0%;
+    width: 100%;
+    margin: 0 auto;
+    min-height: 71vh;
+    .newpass-wrapper{
+      width: 350px;
+      height: max-content;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      align-items: center;
+      
+      .reset-form{
+
+        margin-bottom: 15px;
+        h2{
+          text-align: center;
+          margin-bottom: 20px;
+          margin-top: 10px;
+          text-transform: uppercase;
+        }
+        .error-message {
+          color: red;
+          font-weight: bold;
+          margin-top: 10px;
+        }
+        
+        form{
+          //display: flex;
+          input[type="hidden"] {
+            width: 75%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-right: 10px;
+          }
+          .form-group{
+            margin-bottom: 20px;
+            text-align: center;
+
+            label{
+              display: block;
+              padding-bottom: 10px;
+              font-size: 18px;
+              // font-weight: bold;
+            }
+            input[type="password"] {
+              width: 75%;
+              padding: 8px;
+              border: 1px solid #ccc;
+              border-radius: 3px;
+              margin-right: 10px;
+            }
+            button{
+              display: flex;
+              justify-content: center;
+            }
+
+          }
+          
+          
+        }
+        // button{
+        //   display: block;
+        //   margin: 15px auto;
+        //   width: 60%;
+        //   padding: 10px;
+        //   border: none;
+        //   border-radius: 3px;
+        //   background-color: #007bff;
+        //   color: #000;
+        //   cursor: pointer;
+        //   font-size: 14px;
+        //   font-weight: 900;
+        //   &:hover{
+        //     background-color: #0056b3;
+        //   }
+        // }
+      }
+    }
+  }
+}
 
 .request{
   .container{

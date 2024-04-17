@@ -60,11 +60,11 @@
                 <div class="form-group add row">
                     <div class="col-6">
                         <label for="department_code">Department Code:</label>
-                        <input type="text" id="department_code" name="department_code" pattern="[A-Za-z\s]+" required placeholder="Enter Department Code">
+                        <input type="text" id="department_code" name="department_code" pattern="[A-Za-z\s]+" required placeholder="Enter Department Code:">
                     </div>
                     <div class="col-6">
                         <label for="department_name">Department Name:</label>
-                        <input type="text" id="department_name" name="department_name" pattern="[A-Za-z\s]+" required placeholder="Enter Department Name">
+                        <input type="text" id="department_name" name="department_name" pattern="[A-Za-z\s]+" required placeholder="Enter Department Name:">
                     </div>
                 </div>
                 <input type="hidden" id="department_ID" name="department_ID">
@@ -141,6 +141,8 @@
     <?php 
     include('footer_admin.php'); 
     ?>
+
+
 
     <script>
             //edit button

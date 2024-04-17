@@ -94,29 +94,29 @@
                 <div class="list-title">
                     <h2 style="text-align: center;">EVENTS SCHEDULES</h2>
                     <div class="filtering">
-                    <div class="filter-bar">
-                        <form id="filter-form">
-                            <input type="date" id="filter-date" name="filter-date">
-                            <select id="filter-facility" name="facilitycode" style="height:21.5px">
-                                <option value="">Select Facility</option>
-                                <?php
-                                    // Loop through the fetched facilities and generate options
-                                    require_once '../database/con_db.php'; // Ensure this file path is correct
-                                    $query = "SELECT * FROM facilities"; // Assuming your facilities table name is 'facilities'
-                                    $result = $conn->query($query);
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo "<option value='" . $row['facility_code'] . "'>" . $row['facility_name'] . "</option>";
+                        <div class="filter-bar">
+                            <form id="filter-form">
+                                <input type="date" id="filter-date" name="filter-date">
+                                <select id="filter-facility" name="facilitycode" style="height:21.5px">
+                                    <option value="">Select Facility</option>
+                                    <?php
+                                        // Loop through the fetched facilities and generate options
+                                        require_once '../database/con_db.php'; // Ensure this file path is correct
+                                        $query = "SELECT * FROM facilities"; // Assuming your facilities table name is 'facilities'
+                                        $result = $conn->query($query);
+                                        if ($result->num_rows > 0) {
+                                            while ($row = $result->fetch_assoc()) {
+                                                echo "<option value='" . $row['facility_code'] . "'>" . $row['facility_name'] . "</option>";
+                                            }
+                                        } else {
+                                            echo "<option value=''>No facilities found</option>";
                                         }
-                                    } else {
-                                        echo "<option value=''>No facilities found</option>";
-                                    }
-                                    $conn->close();
-                                ?>
-                            </select>
-                            <button type="submit">Apply Filters</button>
-                        </form>
-                    </div>
+                                        $conn->close();
+                                    ?>
+                                </select>
+                                <button type="submit">Apply Filters</button>
+                            </form>
+                        </div>
 
                         <div class="search-bar">
                             <form id="search-form">
@@ -139,7 +139,6 @@
                                 <?php echo $event['event_code']; ?>
                             </td>
                             <td>
-                                <?php echo $event['event_code']; ?> <br>
                                 <?php echo $event['event_name']; ?> <br>
                                 <?php echo $event['start_from']; ?> - <?php echo $event['end_to']; ?> <br>
                                 <?php echo $event['facility_code']; ?> --- "<?php echo $event['facility_name']; ?>"
@@ -254,6 +253,7 @@
                         data: { status: status },
                         success: function(response) {
                             $('#eventDetailsTable tbody').html(response);
+                            console.log('current status.', status);
                         },
                         error: function() {
                             console.log('Error occurred while fetching event details.');

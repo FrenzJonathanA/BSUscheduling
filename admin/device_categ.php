@@ -70,7 +70,7 @@
                                 // Check if $facilityID is set before using it
                                 if (isset($facilityID)) {
                                     // Prepare and execute the query
-                                    $query = "SELECT facility_ID, facility_code FROM facilities";
+                                    $query = "SELECT facility_ID, facility_code FROM facilities WHERE facility_status = 'available'";
                                     $result = $conn->query($query);
                                     
                                     // Check if query executed successfully

@@ -1,0 +1,7 @@
+.aws
+/vendor/
+.env
+assets/js/opencv.js
+assets/js/utils.js
+login/haarcascade_frontalface_default.xml
+login/indexs.html

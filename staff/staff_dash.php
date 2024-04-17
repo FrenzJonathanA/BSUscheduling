@@ -148,11 +148,14 @@
                             <td>
                                 <?php echo $event['event_code']; ?>
                             </td>
-                            <td>
-                                <?php echo $event['event_code']; ?> <br>
+                            <td class="event-details">
                                 <?php echo $event['event_name']; ?> <br>
                                 <?php echo $event['start_from']; ?> - <?php echo $event['end_to']; ?> <br>
                                 <?php echo $event['facility_code']; ?>
+                                <div class="additional-details" style="display: none;">
+                                    <?php echo $event['event_purpose']; ?> <br>
+                                    <?php echo $event['participants']; ?>
+                                </div>
                             </td>
                             <td><?php echo $event['event_status']; ?></td>
                             <td>
@@ -350,6 +353,13 @@
                         console.log('Error occurred while fetching filtered events.');
                     }
                 });
+            });
+
+
+
+                // Click event for displaying additional details
+            $('.event-details').click(function() {
+                $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
             });
 
         });

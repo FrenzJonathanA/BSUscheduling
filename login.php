@@ -34,14 +34,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         } elseif ($row['status'] == 'pending') {
             // Account is pending approval
-            echo "<script>alert('Your account is pending approval. Please wait for admin confirmation.');</script>";
+            echo "<script>
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Account Pending Approval',
+                        text: 'Your account is pending approval. Please wait for admin confirmation.'
+                    });
+                </script>";
         } else {
             // Account is not approved
-            echo "<script>alert('Your account has not been approved.');</script>";
+            echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Account Not Approved',
+                        text: 'Your account has not been approved.'
+                    });
+                </script>";
         }
     } else {
         // Email and password do not match
-        echo "<script>alert('Invalid email or password');</script>";
+        echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Credentials',
+                    text: 'Invalid email or password'
+                });
+            </script>";
     }
     // Redirect back to login form
     echo "<script>window.location.href = 'login_form.php';</script>";

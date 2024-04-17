@@ -12,82 +12,82 @@
             </div>
 
         <?php
-        // Database connection file
-        require_once 'database/con_db.php';
+            // Database connection file
+            require_once 'database/con_db.php';
 
-        // Check if the event_code parameter is set in the URL
-        if (isset($_GET['event_code'])) {
-            // Sanitize the input to prevent SQL injection
-            $event_code = mysqli_real_escape_string($conn, $_GET['event_code']);
+            // Check if the event_code parameter is set in the URL
+            if (isset($_GET['event_code'])) {
+                // Sanitize the input to prevent SQL injection
+                $event_code = mysqli_real_escape_string($conn, $_GET['event_code']);
 
-            // Prepare and execute the query to fetch event details by event_code
-            $sql = "SELECT event_booking.*, facilities.facility_code,  facilities.facility_name
-                    FROM event_booking 
-                    INNER JOIN facilities ON event_booking.Facility_ID = facilities.facility_ID 
-                    WHERE event_booking.event_code = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("s", $event_code);
-            $stmt->execute();
-            $result = $stmt->get_result();
+                // Prepare and execute the query to fetch event details by event_code
+                $sql = "SELECT event_booking.*, facilities.facility_code,  facilities.facility_name
+                        FROM event_booking 
+                        INNER JOIN facilities ON event_booking.Facility_ID = facilities.facility_ID 
+                        WHERE event_booking.event_code = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("s", $event_code);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
-            // Check if any matching event is found
-            if ($result->num_rows > 0) {
-                // Output table headers
-                echo "<table id='eventDetailsTable' style='width: 100%; border-collapse: collapse;'>
-                    <tr>
-                        <th>Details</th>
-                        <th>Values</th>
-                    </tr>";
-                
-                // Display event details in table format
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>Event Code:</td>";
-                    echo "<td>" . $row['event_code'] . "</td>";
-                    echo "</tr>";
+                // Check if any matching event is found
+                if ($result->num_rows > 0) {
+                    // Output table headers
+                    echo "<table id='eventDetailsTable' style='width: 100%; border-collapse: collapse;'>
+                        <tr>
+                            <th>Details</th>
+                            <th>Values</th>
+                        </tr>";
                     
-                    echo "<tr>";
-                    echo "<td>Event Name:</td>";
-                    echo "<td class='event-name'>" . '"' . $row['event_name'] . '"' . "</td>";
-                    echo "</tr>";
-                    
-                    echo "<tr>";
-                    echo "<td>Event Purpose:</td>";
-                    echo "<td class='event-purpose'>" . $row['event_purpose'] . "</td>";
-                    echo "</tr>";
-                    
-                    echo "<tr>";
-                    echo "<td>Event Duration:</td>";
-                    echo "<td>" . $row['start_from'] . ' - ' . $row['end_to'] . "</td>";
-                    echo "</tr>";
-                    
-                    echo "<tr>";
-                    echo "<td>Participants:</td>";
-                    echo "<td>" . $row['participants'] . "</td>";
-                    echo "</tr>";
-                    
-                    echo "<tr>";
-                    echo "<td>Status:</td>";
-                    echo "<td class='status'>" . $row['event_status'] . "</td>";
-                    echo "</tr>";
-                    
-                    echo "<tr>";
-                    echo "<td>Event Facility:</td>";
-                    echo "<td class='facility'>" . $row['facility_code'] .' - ' . $row['facility_name'] . " <button class='navigate-button'>Navigate</button></td>";
-                    echo "</tr>";
-                    
+                    // Display event details in table format
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>Event Code:</td>";
+                        echo "<td>" . $row['event_code'] . "</td>";
+                        echo "</tr>";
+                        
+                        echo "<tr>";
+                        echo "<td>Event Name:</td>";
+                        echo "<td class='event-name'>" . '"' . $row['event_name'] . '"' . "</td>";
+                        echo "</tr>";
+                        
+                        echo "<tr>";
+                        echo "<td>Event Purpose:</td>";
+                        echo "<td class='event-purpose'>" . $row['event_purpose'] . "</td>";
+                        echo "</tr>";
+                        
+                        echo "<tr>";
+                        echo "<td>Event Duration:</td>";
+                        echo "<td>" . $row['start_from'] . ' - ' . $row['end_to'] . "</td>";
+                        echo "</tr>";
+                        
+                        echo "<tr>";
+                        echo "<td>Participants:</td>";
+                        echo "<td>" . $row['participants'] . "</td>";
+                        echo "</tr>";
+                        
+                        echo "<tr>";
+                        echo "<td>Status:</td>";
+                        echo "<td class='status'>" . $row['event_status'] . "</td>";
+                        echo "</tr>";
+                        
+                        echo "<tr>";
+                        echo "<td>Event Facility:</td>";
+                        echo "<td class='facility'>" . $row['facility_code'] .' - ' . $row['facility_name'] . " <button class='navigate-button'>Navigate</button></td>";
+                        echo "</tr>";
+                        
+                    }
+
+                    echo "</table>"; // Close the table
+                } else {
+                    echo "No event found with the provided event code.";
                 }
 
-                echo "</table>"; // Close the table
+                // Close prepared statement and database connection
+                $stmt->close();
             } else {
-                echo "No event found with the provided event code.";
+                echo "Please provide an event code for searching.";
             }
-
-            // Close prepared statement and database connection
-            $stmt->close();
-        } else {
-            echo "Please provide an event code for searching.";
-        }
         ?>
 
         <button class="return-button" onclick="goBack()">Return <i class="fa-solid fa-right-from-bracket"></i></button>

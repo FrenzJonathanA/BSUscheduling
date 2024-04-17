@@ -95,4 +95,63 @@
     function goBack() {
     window.history.back();
     }
+    $(document).ready(function() {
+        // Approve Button Click Event
+        $('.approve-button').click(function() {
+            // Confirm approval action
+            if (confirm("Are you sure you want to approve this event?")) {
+                // Get event ID from data attribute
+                var eventID = $(this).data('id');
+                console.log("Event ID:", eventID);
+                // Send AJAX request to update event status
+                $.ajax({
+                    url: 'event_approve.php',
+                    type: 'POST',
+                    data: { event_id: eventID },
+                    success: function(response) {
+                        console.log('Approve AJAX Success:', response);
+                        // Reload page or update UI as needed
+                        window.location.reload(); // Example: Reload the page after successful approval
+                    },
+                    error: function() {
+                        console.log('Error occurred while updating event status.');
+                    }
+                });
+            }
+        })  
+        // Remove Button Click Event
+        $('.remove-button').click(function() {
+            // Confirm removal action
+            if (confirm("Are you sure you want to remove this event?")) {
+                // Get event ID from data attribute
+                var eventID = $(this).data('id');
+                console.log("Event ID:", eventID); // Check if event ID is retrieved correctly
+                // Send AJAX request to update event status
+                // Send AJAX request to update user status
+                $.ajax({
+                    url: 'event_remove.php',
+                    type: 'POST',
+                    data: { event_id: eventID },
+                    success: function(response) {
+                        console.log('Remove AJAX Success:', response);
+                        // Reload page or update UI as needed
+                        window.location.reload(); // Example: Reload the page after successful removal
+                    },
+                    error: function() {
+                        console.log('Error occurred while updating event status.');
+                        console.log('Remove AJAX Error: Error occurred while updating event status.');
+                    }
+                });
+            }
+        });     
+        // Update button visibility based on user status
+        $('.approve-button, .remove-button').each(function() {
+            var eventStatus = $(this).closest('tr').find('.event-status').text();
+            if (eventStatus == 'approved' || eventStatus == 'declined') {
+                $(this).hide();
+            }
+        });
+
+
+    });
 </script>

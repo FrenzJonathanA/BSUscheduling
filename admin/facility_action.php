@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Proceed with insertion without checking for uniqueness of facility code
             $sql = "INSERT INTO facilities (facility_name, facility_code, building_loc, facility_capacity) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("sss", $facility_name, $facility_code, $building_loc, $facility_capacity);
+            $stmt->bind_param("ssss", $facility_name, $facility_code, $building_loc, $facility_capacity);
 
             if ($stmt->execute()) {
                 // Insertion successful, redirect to Facility categories page
