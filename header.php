@@ -9,9 +9,13 @@
     <script src="script/script.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
 
 
 </head>
+
+
+
 <body>
     <div class="background-image"></div>
     <div class="header">
@@ -33,6 +37,9 @@
                         <button type="submit">Search</button>
                     </form>
                  </div>
+                 <div class="login-logout">
+                    <?php include('session_handler.php'); ?>
+                </div>
             </div>
         </div>
     </div>

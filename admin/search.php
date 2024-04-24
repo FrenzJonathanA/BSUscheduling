@@ -30,12 +30,16 @@
                     echo "<td>";
                         echo $row['event_code'];
                     echo "</td>";
-                    echo "<td>";
-                        echo $row['event_name'] . '<br>' . 
-                            $row['start_from'] . ' - ' . $row['end_to'] . '<br>' . 
-                            $row['facility_code'] . ' - ' . '"' . $row['facility_name'] . '"';
+                    echo "<td class='event-details'>";
+                        echo "<p><span>Event Name: </span>" . $row['event_name'] . "</p>";
+                        echo "<p><span>Event Date: </span>" . $row['start_from'] . " - " . $row['end_to'] . "</p>";
+                        echo "<p><span>Facility: </span>" . $row['facility_code'] . " - " . '"' . $row['facility_name'] . '"' . "</p>";
+                        echo "<div class='additional-details' style='display: none;'>";
+                            echo "<p><span>Event Purpose: <br></span>" . $row['event_purpose'] . "</p>";
+                            echo "<p><span>Participants: </span>" . $row['participants'] . "</p>";
+                        echo "</div>";
                     echo "</td>";
-                    echo "<td>" . $row['event_status'] . "</td>";
+                    echo "<td style='text-transform: uppercase;'>" . $row['event_status'] . "</td>";
                     echo "<td>";
                         // Determine button display based on event status
                         if ($row['event_status'] == 'pending') {
@@ -50,7 +54,7 @@
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='4'>No events found with CODE: " . $event_code . "</td></tr>";
+            echo "<tr><td colspan='4'>No events found with status: " . $status . "</td></tr>";
         }
 
         echo "</table>";
@@ -95,4 +99,8 @@
     function goBack() {
     window.history.back();
     }
+    // Click event for displaying additional details
+    $('.event-details').click(function() {
+        $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
+    });
 </script>

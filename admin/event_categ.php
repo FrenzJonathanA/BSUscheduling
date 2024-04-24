@@ -126,7 +126,7 @@
                         </div>
                     </div>
                 </div>
-                <table id="eventDetailsTable">
+                <!-- <table id="eventDetailsTable">
                     <tr>
                         <th>Event Code</th>
                         <th>Event Details</th>
@@ -142,6 +142,41 @@
                                 <?php echo $event['event_name']; ?> <br>
                                 <?php echo $event['start_from']; ?> - <?php echo $event['end_to']; ?> <br>
                                 <?php echo $event['facility_code']; ?> --- "<?php echo $event['facility_name']; ?>"
+                            </td>
+                            <td><?php echo $event['event_status']; ?></td>
+                            <td>
+                                <?php if ($event['event_status'] == 'pending') : ?>
+                                    <button class="approve-button" style="margin-bottom:5px" data-id="<?php echo $event['event_ID']; ?>">Approve</button>
+                                    <button class="remove-button" data-id="<?php echo $event['event_ID']; ?>">Remove</button>
+                                <?php elseif ($event['event_status'] == 'approved') : ?>
+                                    <button class="remove-button" data-id="<?php echo $event['event_ID']; ?>">Remove</button>
+                                <?php elseif ($event['event_status'] == 'declined') : ?>
+                                    <button class="approve-button" data-id="<?php echo $event['event_ID']; ?>">Approve</button>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table> -->
+                <table id="eventDetailsTable">
+                    <tr>
+                        <th>Event Code</th>
+                        <th>Event Details</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    <?php foreach ($events as $event) : ?>
+                        <tr>
+                            <td>
+                                <?php echo $event['event_code']; ?>
+                            </td>
+                            <td class="event-details">
+                                <?php echo "<p><span>Event Name: </span>" . $event['event_name'] . "</p>"; ?> 
+                                <?php echo "<p><span>Duration: </span>" . $event['start_from']; ?> - <?php echo $event['end_to'] . "</p>"; ?>
+                                <?php echo "<p><span>Event Venue: </span>" . $event['facility_code']; ?> - "<?php echo $event['facility_name'] . "</p>"; ?>
+                                <div class="additional-details" style="display: none;">
+                                    <?php echo "<p><span>Event Purpose: </span><br>" . $event['event_purpose'] . "</p>"; ?> 
+                                    <?php echo "<p><span>Event Participants: </span>" . $event['participants'] . "</p>"; ?>
+                                </div>
                             </td>
                             <td><?php echo $event['event_status']; ?></td>
                             <td>
@@ -337,6 +372,12 @@
                         console.log('Error occurred while fetching filtered events.');
                     }
                 });
+            });
+
+
+                // Click event for displaying additional details
+            $('.event-details').click(function() {
+                $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
             });
 
 

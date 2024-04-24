@@ -66,6 +66,8 @@
                     </div>
                     <button type="submit">Submit</button>
                 </form>
+                <a href="cal-sample.php"><button type="submit">back to calendar</button></a>
+
             </div>
         </div>
     </div>

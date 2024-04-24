@@ -3,7 +3,7 @@
 
     try {
         // Query to select all users
-        $sql = "SELECT event_booking.*, facilities.facility_code
+        $sql = "SELECT event_booking.*, facilities.facility_code, facilities.facility_name
                 FROM event_booking
                 Inner Join facilities
                 ON event_booking.facility_ID = facilities.facility_ID";
@@ -149,12 +149,12 @@
                                 <?php echo $event['event_code']; ?>
                             </td>
                             <td class="event-details">
-                                <?php echo $event['event_name']; ?> <br>
-                                <?php echo $event['start_from']; ?> - <?php echo $event['end_to']; ?> <br>
-                                <?php echo $event['facility_code']; ?>
+                                <?php echo "<p><span>Event Name: </span>" . $event['event_name'] . "</p>"; ?> 
+                                <?php echo "<p><span>Duration: </span>" . $event['start_from']; ?> - <?php echo $event['end_to'] . "</p>"; ?>
+                                <?php echo "<p><span>Event Venue: </span>" . $event['facility_code']; ?> - "<?php echo $event['facility_name'] . "</p>"; ?>
                                 <div class="additional-details" style="display: none;">
-                                    <?php echo $event['event_purpose']; ?> <br>
-                                    <?php echo $event['participants']; ?>
+                                    <?php echo "<p><span>Event Purpose: </span><br>" . $event['event_purpose'] . "</p>"; ?> 
+                                    <?php echo "<p><span>Event Participants: </span>" . $event['participants'] . "</p>"; ?>
                                 </div>
                             </td>
                             <td><?php echo $event['event_status']; ?></td>
@@ -247,6 +247,8 @@
                     });
                 }
             });
+
+
 
             // Update button visibility based on user status
             $('.approve-button, .remove-button').each(function() {

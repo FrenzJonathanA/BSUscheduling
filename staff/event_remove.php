@@ -1,41 +1,89 @@
 <?php
-require __DIR__ . '/../database/con_db.php';
+    require __DIR__ . '/../database/con_db.php';
 
-if (isset($_POST['event_id'])) {
-    $eventID = $_POST['event_id'];
+    require '../PHPMailer/src/Exception.php';
+    require '../PHPMailer/src/PHPMailer.php';
+    require '../PHPMailer/src/SMTP.php';
 
-    $sql = "UPDATE event_booking SET event_status = 'declined' WHERE event_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $eventID);
 
-    if ($stmt->execute()) {
-        echo 'success';
+
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+
+    if (isset($_POST['event_id'])) {
+        $eventID = $_POST['event_id'];
+
+        $sql = "UPDATE event_booking SET event_status = 'declined' WHERE event_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $eventID);
+
+        if ($stmt->execute()) {
+            // Send decline notification email
+            sendDeclineEmailNotification($eventID, 'declined');
+            echo 'success';
+        } else {
+            echo 'error';
+        }
+
+        $stmt->close();
     } else {
         echo 'error';
     }
 
-    $stmt->close();
-} else {
-    echo 'error';
-}
-?>
+    // Function to send email notification for decline
+    function sendDeclineEmailNotification($eventID, $status) {
+        global $conn;
 
-<?php
-require_once '/../database/con_db.php';
-require_once 'email_sender.php';
+        // Fetch event details
+        $sql = "SELECT event_booking.*, user.*, facilities.facility_name
+                FROM event_booking
+                INNER JOIN user ON event_booking.user_ID = user.user_ID
+                INNER JOIN facilities ON event_booking.facility_ID = facilities.facility_ID
+                WHERE event_ID = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $eventID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $event = $result->fetch_assoc();
 
-$id = $_GET['event_id'];
-$status = 'declined';
+        // Create and send email
+        $mail = new PHPMailer(true);
+        try {
+            //Server settings
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'frenzjonathan5958@gmail.com';
+            $mail->Password = 'kdxr onib hnoc nldy';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
 
-$result = sendDeclineEmail($_GET['email'], $_GET['event_code'], $_GET['event_name'], $_GET['start_from'], $_GET['end_to'], $_GET['event_purpose'], $_GET['participants'], $_GET['facility_name']);
+            //Recipients
+            $mail->setFrom('frenzjonathan5958@gmail.com', 'FRENZ JONATHAN V. ALULOD');
+            $mail->addAddress($event['email']); // User's email address
+            $mail->addReplyTo('frenzjonathan5958@gmail.com', 'FRENZ JONATHAN V. ALULOD');
 
-if($result === 'success') {
-    $query = "UPDATE event_booking SET event_status = 'declined' WHERE event_id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('si', $status, $id);
-    $stmt->execute();
-    header('Location: staff_dash.php');
-} else {
-    echo $result;
-}
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = 'Event Approval Notification';
+            $mail->Body = 'Dear ' . $event['first_name'] . ' ' . $event['last_name'] . ',' . '<br><br>'; 
+            $mail->Body .= 'Your event with event code ' . $event['event_code'] . ' has been ' . $status . '.' . '<br><br>';
+            $mail->Body .= 'Event Details:' . '.<br>';
+            $mail->Body .= 'Event Name: ' . $event['event_name'] . '<br>';
+            $mail->Body .= 'Start Date: ' . $event['start_from'] . '<br>';
+            $mail->Body .= 'End Date: ' . $event['end_to'] . '<br>';
+            $mail->Body .= 'Event Purpose: ' . $event['event_purpose'] . '<br>';
+            $mail->Body .= 'Event Participants: ' . $event['participants'] . '<br>';
+            $mail->Body .= 'Facility: ' . $event['facility_name'] . '<br><br>';
+            $mail->Body .= 'Thank you.' . '<br><br>';
+            $mail->Body .= 'Best regards,' . '<br>';
+            $mail->Body .= 'Event Management System';
+
+            $mail->send();
+            echo 'Decline email sent successfully';
+        } catch (Exception $e) {
+            echo "Decline email could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+    }
+
 ?>

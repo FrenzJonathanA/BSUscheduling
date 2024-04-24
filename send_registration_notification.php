@@ -1,9 +1,25 @@
 <?php
 
+
+// Include database connection
+include 'database/con_db.php';
+
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
+// Include PHPMailer classes
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
 // Function to send registration notification email
-function sendRegistrationNotification($email) {
+function sendRegistrationNotification($email, $conn) {
     // Retrieve user's personal information from the database
-    $sql = "SELECT first_name, last_name, contact_number, employee_ID, department_ID FROM user WHERE email = ?";
+    $sql = "SELECT user.*, department.department_name
+            FROM user
+            INNER JOIN department ON user.department_ID = department.department_ID
+            WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -39,12 +55,12 @@ function sendRegistrationNotification($email) {
         // Set email subject and body
         $mail->Subject = 'Registration Notification';
         $mail->Body = 'Dear ' . $row['first_name'] . ' ' . $row['last_name'] . ',' . "\n\n";
-        $mail->Body .= 'Your registration is successful. Your account details are as follows:' . "\n\n";
+        $mail->Body .= 'Your registration is successful adn is PENDING for APPROVAL. Your account details are as follows:' . "\n\n";
         $mail->Body .= 'NAME: ' . $row['first_name'] . ' ' . $row['last_name'] . "\n";
         $mail->Body .= 'EMAIL: ' . $email . "\n";
         $mail->Body .= 'CONTACT NUMBER: ' . $row['contact_number'] . "\n";
         $mail->Body .= 'EMPLOYEE ID: ' . $row['employee_ID'] . "\n";
-        $mail->Body .= 'DEPARTMENT: ' . $row['department_ID'] . "\n\n";
+        $mail->Body .= 'DEPARTMENT: ' . $row['department_name'] . "\n\n";
         $mail->Body .= 'Thank you for registering with us.' . "\n\n";
         $mail->Body .= 'Best regards,' . "\n";
         $mail->Body .= 'Registration System';

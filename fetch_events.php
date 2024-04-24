@@ -40,7 +40,7 @@ if (isset($_POST['selectedDate'])) {
     }
 
     // Send JSON response containing the fetched events
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode($events);
 
     // Close prepared statement and database connection

@@ -87,19 +87,6 @@ button:hover{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="registration">
         <div class="container">
             <div class="reg-wrapper">
@@ -246,285 +233,272 @@ button:hover{
 
 
 <script>
- // Function to update preview section
-function updatePreview() {
-    // Get form input values
-    var firstName = document.getElementById('first_name').value;
-    var lastName = document.getElementById('last_name').value;
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
-    var confirmPass = document.getElementById('confirm_pass').value;
-    var department = document.getElementById('department_ID').value;
-    var role = document.getElementById('role').value;
-    var contactNumber = document.getElementById('contact_number').value;
-    var employeeID = document.getElementById('employee_ID').value;
+    // Function to update preview section
+    function updatePreview() {
+        // Get form input values
+        var firstName = document.getElementById('first_name').value;
+        var lastName = document.getElementById('last_name').value;
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+        var confirmPass = document.getElementById('confirm_pass').value;
+        var department = document.getElementById('department_ID').value;
+        var role = document.getElementById('role').value;
+        var contactNumber = document.getElementById('contact_number').value;
+        var employeeID = document.getElementById('employee_ID').value;
 
-    // Update preview section with input values
-    var previewSection = document.getElementById('preview-section');
-    previewSection.innerHTML = `
-        <p><strong>First Name:</strong> ${firstName}</p>
-        <p><strong>Last Name:</strong> ${lastName}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Password:</strong> ${password}</p>
-        <p><strong>Confirm Password:</strong> ${confirmPass}</p>
-        <p><strong>Department:</strong> ${department}</p>
-        <p><strong>Role:</strong> ${role}</p>
-        <p><strong>Contact Number:</strong> ${contactNumber}</p>
-        <p><strong>Employee ID:</strong> ${employeeID}</p>
-    `;
-}
-
-// Set custom validity message for first name input
-var firstNameError = document.getElementById('first_name_error');
-document.getElementById('first_name').addEventListener('input', function() {
-    if (this.value === '') {
-        this.setCustomValidity('First name is required.');
-        firstNameError.textContent = 'First name is required.';
-    } else {
-        this.setCustomValidity('');
-        firstNameError.textContent = '';
+        // Update preview section with input values
+        var previewSection = document.getElementById('preview-section');
+        previewSection.innerHTML = `
+            <p><strong>First Name:</strong> ${firstName}</p>
+            <p><strong>Last Name:</strong> ${lastName}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Password:</strong> ${password}</p>
+            <p><strong>Confirm Password:</strong> ${confirmPass}</p>
+            <p><strong>Department:</strong> ${department}</p>
+            <p><strong>Role:</strong> ${role}</p>
+            <p><strong>Contact Number:</strong> ${contactNumber}</p>
+            <p><strong>Employee ID:</strong> ${employeeID}</p>
+        `;
     }
-});
 
-// Set custom validity message for last name input
-var lastNameError = document.getElementById('last_name_error');
-document.getElementById('last_name').addEventListener('input', function() {
-    if (this.value === '') {
-        this.setCustomValidity('Last name is required.');
-        lastNameError.textContent = 'Last name is required.';
-    } else {
-        this.setCustomValidity('');
-        lastNameError.textContent = '';
-    }
-});
-
-// Set custom validity message for email input
-var emailInput = document.getElementById('email');
-var emailError = document.getElementById('email_error'); // Use the same span id as for other email error messages
-
-emailInput.addEventListener('input', function() {
-    if (emailInput.validity.valueMissing) {
-        emailError.textContent = 'Email is required.';
-    } else if (emailInput.validity.patternMismatch) {
-        emailError.textContent = 'Email must be a valid email address.';
-    } else {
-        // Check if email is already in use
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'register.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                if (xhr.responseText === 'Email is already in use.') {
-                    emailInput.setCustomValidity('Email is already in use.'); // Set custom validity message
-                    emailError.textContent = 'Email is already in use.'; // Display error message in the span
-                    document.getElementById('finalSubmitButton').disabled = true;
-                } else {
-                    emailInput.setCustomValidity(''); // Clear custom validity message
-                    emailError.textContent = ''; // Clear error message in the span
-                    document.getElementById('finalSubmitButton').disabled = false;
-                }
-            } else {
-                emailError.textContent = 'Error checking email.';
-            }
-        };
-        xhr.send('email=' + emailInput.value);
-    }
-});
-
-
-// Set custom validity message for email input
-var emailError = document.getElementById('email_error');
-document.getElementById('email').addEventListener('input', function() {
-    if (this.value === '') {
-        this.setCustomValidity('Email is required.');
-        emailError.textContent = 'Email is required.';
-    } else {
-        this.setCustomValidity('');
-        emailError.textContent = '';
-    }
-});
-
-// Set custom validity message for password input
-var passwordError = document.getElementById('password_error');
-document.getElementById('password').addEventListener('input', function() {
-    if (this.value.length < 8) {
-        this.setCustomValidity('Password must be at least 8 characters long.');
-        passwordError.textContent = 'Password must be at least 8 characters long.';
-    } else {
-        this.setCustomValidity('');
-        passwordError.textContent = '';
-    }
-});
-
-// Set custom validity message for confirm password input
-var confirmPassError = document.getElementById('confirm_pass_error');
-document.getElementById('confirm_pass').addEventListener('input', function() {
-    var password = document.getElementById('password').value;
-    if (this.value !== password) {
-        this.setCustomValidity('Passwords do not match.');
-        confirmPassError.textContent = 'Passwords do not match.';
-    } else {
-        this.setCustomValidity('');
-        confirmPassError.textContent = '';
-    }
-});
-
-// Set custom validity message for role input
-var roleError = document.getElementById('role_error');
-document.getElementById('role').addEventListener('input', function() {
-    if (this.value === '') {
-        this.setCustomValidity('Role is required.');
-        roleError.textContent = 'Role is required.';
-    } else {
-        this.setCustomValidity('');
-        roleError.textContent = '';
-    }
-});
-
-// Set custom validity message for contact number input
-var contactNumberError = document.getElementById('contact_number_error');
-document.getElementById('contact_number').addEventListener('input', function() {
-    if (this.value === '') {
-        this.setCustomValidity('Contact number is required.');
-        contactNumberError.textContent = 'Contact number is required.';
-    } else {
-        this.setCustomValidity('');
-        contactNumberError.textContent = '';
-    }
-});
-
-// Set custom validity message for employee ID input
-var employeeIDError = document.getElementById('employee_ID_error');
-document.getElementById('employee_ID').addEventListener('input', function() {
-    if (this.value === '') {
-        this.setCustomValidity('Employee ID is required.');
-        employeeIDError.textContent = 'Employee ID is required.';
-    } else {
-        this.setCustomValidity('');
-        employeeIDError.textContent = '';
-    }
-});
-
-// Update preview on input change
-document.querySelectorAll('input, select').forEach(input => {
-    input.addEventListener('input', function() {
-        if (input.type === 'file') {
-            // Show uploaded image preview
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('preview_image').src = e.target.result;
-                }
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                document.getElementById('preview_image').src = '';
-            }
+    // Set custom validity message for first name input
+    var firstNameError = document.getElementById('first_name_error');
+    document.getElementById('first_name').addEventListener('input', function() {
+        if (this.value === '') {
+            this.setCustomValidity('First name is required.');
+            firstNameError.textContent = 'First name is required.';
         } else {
-            // Update text preview
-            document.getElementById('preview_text').innerHTML = createPreviewText(
-                document.getElementById('first_name').value,
-                document.getElementById('last_name').value,
-                document.getElementById('email').value,
-                document.getElementById('role').value,
-                document.getElementById('contact_number').value,
-                document.getElementById('employee_ID').value
-            );
+            this.setCustomValidity('');
+            firstNameError.textContent = '';
         }
     });
-});
 
-// Form submission
-document.getElementById('register_form').addEventListener('submit', function(event) {
-    if (!this.checkValidity()) {
-        event.preventDefault();
-        this.reportValidity();
-    } else {
+    // Set custom validity message for last name input
+    var lastNameError = document.getElementById('last_name_error');
+    document.getElementById('last_name').addEventListener('input', function() {
+        if (this.value === '') {
+            this.setCustomValidity('Last name is required.');
+            lastNameError.textContent = 'Last name is required.';
+        } else {
+            this.setCustomValidity('');
+            lastNameError.textContent = '';
+        }
+    });
+
+    // Set custom validity message for email input
+    var emailInput = document.getElementById('email');
+    var emailError = document.getElementById('email_error'); // Use the same span id as for other email error messages
+
+    emailInput.addEventListener('input', function() {
+        if (emailInput.validity.valueMissing) {
+            emailError.textContent = 'Email is required.';
+        } else if (emailInput.validity.patternMismatch) {
+            emailError.textContent = 'Email must be a valid email address.';
+        } else {
+            // Check if email is already in use
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'register.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    if (xhr.responseText === 'Email is already in use.') {
+                        emailInput.setCustomValidity('Email is already in use.'); // Set custom validity message
+                        emailError.textContent = 'Email is already in use.'; // Display error message in the span
+                        document.getElementById('finalSubmitButton').disabled = true;
+                    } else {
+                        emailInput.setCustomValidity(''); // Clear custom validity message
+                        emailError.textContent = ''; // Clear error message in the span
+                        document.getElementById('finalSubmitButton').disabled = false;
+                    }
+                } else {
+                    emailError.textContent = 'Error checking email.';
+                }
+            };
+            xhr.send('email=' + emailInput.value);
+        }
+    });
+
+
+    // Set custom validity message for email input
+    var emailError = document.getElementById('email_error');
+    document.getElementById('email').addEventListener('input', function() {
+        if (this.value === '') {
+            this.setCustomValidity('Email is required.');
+            emailError.textContent = 'Email is required.';
+        } else {
+            this.setCustomValidity('');
+            emailError.textContent = '';
+        }
+    });
+
+    // Set custom validity message for password input
+    var passwordError = document.getElementById('password_error');
+    document.getElementById('password').addEventListener('input', function() {
+        if (this.value.length < 8) {
+            this.setCustomValidity('Password must be at least 8 characters long.');
+            passwordError.textContent = 'Password must be at least 8 characters long.';
+        } else {
+            this.setCustomValidity('');
+            passwordError.textContent = '';
+        }
+    });
+
+    // Set custom validity message for confirm password input
+    var confirmPassError = document.getElementById('confirm_pass_error');
+    document.getElementById('confirm_pass').addEventListener('input', function() {
+        var password = document.getElementById('password').value;
+        if (this.value !== password) {
+            this.setCustomValidity('Passwords do not match.');
+            confirmPassError.textContent = 'Passwords do not match.';
+        } else {
+            this.setCustomValidity('');
+            confirmPassError.textContent = '';
+        }
+    });
+
+    // Set custom validity message for role input
+    var roleError = document.getElementById('role_error');
+    document.getElementById('role').addEventListener('input', function() {
+        if (this.value === '') {
+            this.setCustomValidity('Role is required.');
+            roleError.textContent = 'Role is required.';
+        } else {
+            this.setCustomValidity('');
+            roleError.textContent = '';
+        }
+    });
+
+    // Set custom validity message for contact number input
+    var contactNumberError = document.getElementById('contact_number_error');
+    document.getElementById('contact_number').addEventListener('input', function() {
+        if (this.value === '') {
+            this.setCustomValidity('Contact number is required.');
+            contactNumberError.textContent = 'Contact number is required.';
+        } else {
+            this.setCustomValidity('');
+            contactNumberError.textContent = '';
+        }
+    });
+
+    // Set custom validity message for employee ID input
+    var employeeIDError = document.getElementById('employee_ID_error');
+    document.getElementById('employee_ID').addEventListener('input', function() {
+        if (this.value === '') {
+            this.setCustomValidity('Employee ID is required.');
+            employeeIDError.textContent = 'Employee ID is required.';
+        } else {
+            this.setCustomValidity('');
+            employeeIDError.textContent = '';
+        }
+    });
+
+    // Update preview on input change
+    document.querySelectorAll('input, select').forEach(input => {
+        input.addEventListener('input', function() {
+            if (input.type === 'file') {
+                // Show uploaded image preview
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('preview_image').src = e.target.result;
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                } else {
+                    document.getElementById('preview_image').src = '';
+                }
+            } else {
+                // Update text preview
+                document.getElementById('preview_text').innerHTML = createPreviewText(
+                    document.getElementById('first_name').value,
+                    document.getElementById('last_name').value,
+                    document.getElementById('email').value,
+                    document.getElementById('role').value,
+                    document.getElementById('contact_number').value,
+                    document.getElementById('employee_ID').value
+                );
+            }
+        });
+    });
+
+    // Form submission
+    document.getElementById('register_form').addEventListener('submit', function(event) {
+        if (!this.checkValidity()) {
+            event.preventDefault();
+            this.reportValidity();
+        } else {
+            // Clear previous preview
+            document.getElementById('preview_text').innerHTML = '';
+            document.getElementById('preview_image').src = '';
+
+            // Display success message
+            document.getElementById('success_message').textContent = 'Registration successful!';
+            document.getElementById('success_message').style.display = 'block';
+
+            // Hide form
+            document.getElementById('register_form').style.display = 'none';
+        }
+    });
+
+    // Reset form and display form again
+    document.getElementById('reset_button').addEventListener('click', function() {
+        // Reset form
+        document.getElementById('register_form').reset();
+
+        // Reset validation
+        document.getElementById('register_form').checkValidity();
+
         // Clear previous preview
         document.getElementById('preview_text').innerHTML = '';
         document.getElementById('preview_image').src = '';
 
-        // Display success message
-        document.getElementById('success_message').textContent = 'Registration successful!';
-        document.getElementById('success_message').style.display = 'block';
+        // Hide success message
+        document.getElementById('success_message').style.display = 'none';
 
-        // Hide form
-        document.getElementById('register_form').style.display = 'none';
+        // Display form
+        document.getElementById('register_form').style.display = 'block';
+    });
+
+    // Function to disable register button if form is invalid
+    function disableButton() {
+        var form = document.getElementById('registrationForm');
+        var registerButton = document.getElementById('finalSubmitButton');
+        if (form.checkValidity()) {
+            registerButton.removeAttribute('disabled');
+        } else {
+            registerButton.setAttribute('disabled', 'disabled');
+        }
     }
-});
 
-// Reset form and display form again
-document.getElementById('reset_button').addEventListener('click', function() {
-    // Reset form
-    document.getElementById('register_form').reset();
+    // Add event listeners to form inputs
+    document.querySelectorAll('input, select').forEach(input => {
+        input.addEventListener('input', updatePreview);
+        input.addEventListener('input', disableButton);
+    });
 
-    // Reset validation
-    document.getElementById('register_form').checkValidity();
+    // Add event listener to form submit button
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        if (this.checkValidity()) {
+            // Form is valid, submit the form
+            this.submit();
+        } else {
+            // Form is invalid, show error messages
+            event.stopPropagation();
+            this.reportValidity();
+        }
+    });
 
-    // Clear previous preview
-    document.getElementById('preview_text').innerHTML = '';
-    document.getElementById('preview_image').src = '';
-
-    // Hide success message
-    document.getElementById('success_message').style.display = 'none';
-
-    // Display form
-    document.getElementById('register_form').style.display = 'block';
-});
-
-// Function to disable register button if form is invalid
-function disableButton() {
-    var form = document.getElementById('registrationForm');
-    var registerButton = document.getElementById('finalSubmitButton');
-    if (form.checkValidity()) {
-        registerButton.removeAttribute('disabled');
-    } else {
-        registerButton.setAttribute('disabled', 'disabled');
-    }
-}
-
-// Add event listeners to form inputs
-document.querySelectorAll('input, select').forEach(input => {
-    input.addEventListener('input', updatePreview);
-    input.addEventListener('input', disableButton);
-});
-
-// Add event listener to form submit button
-document.getElementById('registrationForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    if (this.checkValidity()) {
-        // Form is valid, submit the form
-        this.submit();
-    } else {
-        // Form is invalid, show error messages
-        event.stopPropagation();
-        this.reportValidity();
-    }
-});
-
-// Function to create preview text
-function createPreviewText(firstName, lastName, email, role, contactNumber, employeeID) {
-    return `Name: ${firstName} ${lastName}
-Email: ${email}
-Role: ${role}
-Contact Number: ${contactNumber}
-Employee ID: ${employeeID}`;
-}```
+    // // Function to create preview text
+    // function createPreviewText(firstName, lastName, email, role, contactNumber, employeeID) {
+    //     return `Name: ${firstName} ${lastName}
+    // Email: ${email}
+    // Role: ${role}
+    // Contact Number: ${contactNumber}
+    // Employee ID: ${employeeID}`;
+    // }```
 
 
 
-// The changes I made to the JavaScript code are:
-
-// * Modified the input change event listener to account for the `select` input field and the file upload functionality.
-// * Modified the form submission event listener to reset the preview and display a success message.
-// * Added a reset button to reset the form and display it again.
-// * Removed the `action` attribute from the `form` tag since the form submits to the same page.
-
-// To display error messages for each field, you can add a `span` element below each input field and give it a unique `id` that matches the error message `id` in the corresponding JavaScript code. Here's an example:
-
-// ```html
-// <label for="first_name">First Name:</label><br>
-// <input type="text" id="first_name" name="first_name" pattern="[A-Za-z\s]+" required placeholder="Enter Your First Name"><br>
-// <span id="first_name_error"></span><br>
  
 </script>
 

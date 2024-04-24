@@ -27,32 +27,37 @@ if (isset($_GET['filter-date']) || isset($_GET['facilitycode'])) {
 
     // Output the table rows
     if ($result->num_rows > 0) {
+        // Display event details in table format
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
-            echo "<td>" . $row['event_code'] . "</td>";
-            echo "<td class='event-details'>" . $row['event_name'] . "<br>" . $row['start_from'] . " - " . $row['end_to'] . "<br>" . $row['facility_code'] . ' - "' . $row['facility_name'] . '"' . "</td>";
-            echo "<td>" . $row['event_status'] . "</td>";
-            echo "<td>";
-            // Add a hidden container for additional details
-            echo "<div class='additional-details' style='display: none;'>";
-            // Display all details when the container is clicked
-            echo "Event Purpose: " . $row['event_purpose'] . "<br>";
-            echo "Participants: " . $row['participants'] . "<br>";
-            // Add more details as needed
-            echo "</div>";
-            if ($row['event_status'] == 'pending') {
-                echo "<button class='approve-button' style='margin-bottom:5px' data-id='" . $row['event_ID'] . "'>Approve</button>";
-                echo "<button class='remove-button' data-id='" . $row['event_ID'] . "'>Remove</button>";
-            } elseif ($row['event_status'] == 'approved') {
-                echo "<button class='remove-button' data-id='" . $row['event_ID'] . "'>Remove</button>";
-            } elseif ($row['event_status'] == 'declined') {
-                echo "<button class='approve-button' data-id='" . $row['event_ID'] . "'>Approve</button>";
-            }
-            echo "</td>";
+                echo "<td>";
+                    echo $row['event_code'];
+                echo "</td>";
+                echo "<td class='event-details'>";
+                    echo "<p><span>Event Name: </span>" . $row['event_name'] . "</p>";
+                    echo "<p><span>Event Date: </span>" . $row['start_from'] . " - " . $row['end_to'] . "</p>";
+                    echo "<p><span>Facility: </span>" . $row['facility_code'] . " - " . '"' . $row['facility_name'] . '"' . "</p>";
+                    echo "<div class='additional-details' style='display: none;'>";
+                        echo "<p><span>Event Purpose: <br></span>" . $row['event_purpose'] . "</p>";
+                        echo "<p><span>Participants: </span>" . $row['participants'] . "</p>";
+                    echo "</div>";
+                echo "</td>";
+                echo "<td style='text-transform: uppercase;'>" . $row['event_status'] . "</td>";
+                echo "<td>";
+                    // Determine button display based on event status
+                    if ($row['event_status'] == 'pending') {
+                        echo "<button class='approve-button' style='margin-bottom:5px' data-id='" . $row['event_ID'] . "'>Approve</button>";
+                        echo "<button class='remove-button' data-id='" . $row['event_ID'] . "'>Remove</button>";
+                    } elseif ($row['event_status'] == 'approved') {
+                        echo "<button class='remove-button' data-id='" . $row['event_ID'] . "'>Remove</button>";
+                    } elseif ($row['event_status'] == 'declined') {
+                        echo "<button class='approve-button' data-id='" . $row['event_ID'] . "'>Approve</button>";
+                    }
+                echo "</td>";
             echo "</tr>";
         }
     } else {
-        echo "<tr><td colspan='4'>No events found.</td></tr>";
+        echo "<tr><td colspan='4'>No events found with status: " . $status . "</td></tr>";
     }
     echo "<tr><td colspan='4'><button class='return-button' onclick='goBack()'>Return <i class='fa-solid fa-right-from-bracket'></i></button></td></tr>";
 
@@ -93,5 +98,10 @@ if (isset($_GET['filter-date']) || isset($_GET['facilitycode'])) {
     function goBack() {
     window.history.back();
     }
+        // Click event for displaying additional details
+    $('.event-details').click(function() {
+        $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
+    });
+
     
 </script>

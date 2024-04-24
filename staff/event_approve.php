@@ -1,6 +1,15 @@
 <?php
     require __DIR__ . '/../database/con_db.php';
 
+    require '../PHPMailer/src/Exception.php';
+    require '../PHPMailer/src/PHPMailer.php';
+    require '../PHPMailer/src/SMTP.php';
+
+
+
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+
     if (isset($_POST['event_id'])) {
         $eventID = $_POST['event_id'];
 
@@ -9,39 +18,77 @@
         $stmt->bind_param("i", $eventID);
 
         if ($stmt->execute()) {
+            // Send approval notification email
+            sendEmailNotification($eventID, 'approved');
             echo 'success';
+            console.log('succeed to update event status.');
         } else {
             echo 'error';
+            console.log('Failed to update event status.');
         }
 
         $stmt->close();
         //$conn->close();
     } else {
         echo 'error';
+        console.log('Event ID not provided.');
     }
-?> 
 
-<!-- 
-?php
-    //require __DIR__ . '/../database/con_db.php';
+    // Function to send email notification
+    function sendEmailNotification($eventID, $status) {
+        global $conn;
 
-    require_once '/../database/con_db.php';
-    require_once 'email_sender.php';
-
-    $id = $_GET['event_id'];
-    $status = 'approved';
-
-    $result = sendApprovalEmail($_GET['email'], $_GET['event_code'], $_GET['event_name'], $_GET['start_from'], $_GET['end_to'], $_GET['event_purpose'], $_GET['participants'], $_GET['facility_name']);
-
-    if($result === 'success') {
-        $query = "UPDATE event_booking SET event_status = 'approved' WHERE event_id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param('si', $status, $id);
+        // Fetch event details
+        $sql = "SELECT event_booking.*, user.*, facilities.facility_name
+                FROM event_booking
+                INNER JOIN user ON event_booking.user_ID = user.user_ID
+                INNER JOIN facilities ON event_booking.facility_ID = facilities.facility_ID
+                WHERE event_ID = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $eventID);
         $stmt->execute();
-        header('Location: staff_dash.php');
-    } else {
-        echo $result;
-    }
+        $result = $stmt->get_result();
+        $event = $result->fetch_assoc();
 
-  //  $conn->close();
-?> -->
+        // Create and send email
+        $mail = new PHPMailer(true);
+        try {
+            //Server settings
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'frenzjonathan5958@gmail.com';
+            $mail->Password = 'kdxr onib hnoc nldy';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+
+            //Recipients
+            $mail->setFrom('frenzjonathan5958@gmail.com', 'FRENZ JONATHAN V. ALULOD');
+            $mail->addAddress($event['email']); // User's email address
+            $mail->addReplyTo('frenzjonathan5958@gmail.com', 'FRENZ JONATHAN V. ALULOD');
+
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = 'Event Approval Notification';
+            $mail->Body = 'Dear ' . $event['first_name'] . ' ' . $event['last_name'] . ',' . '<br><br>'; 
+            $mail->Body .= 'Your event with event code ' . $event['event_code'] . ' has been ' . $status . '.' . '<br><br>';
+            $mail->Body .= 'Event Details:' . '.<br>';
+            $mail->Body .= 'Event Name: ' . $event['event_name'] . '<br>';
+            $mail->Body .= 'Start Date: ' . $event['start_from'] . '<br>';
+            $mail->Body .= 'End Date: ' . $event['end_to'] . '<br>';
+            $mail->Body .= 'Event Purpose: ' . $event['event_purpose'] . '<br>';
+            $mail->Body .= 'Event Participants: ' . $event['participants'] . '<br>';
+            $mail->Body .= 'Facility: ' . $event['facility_name'] . '<br><br>';
+            $mail->Body .= 'Thank you.' . '<br><br>';
+            $mail->Body .= 'Best regards,' . '<br>';
+            $mail->Body .= 'Event Management System';
+            
+            $mail->send();
+            echo 'Email sent successfully';
+           
+        } catch (Exception $e) {
+            echo "Email could not be sent. Mailer Error: {$mail->ErrorInfo}";
+          
+        }
+    }
+?>

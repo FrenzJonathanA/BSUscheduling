@@ -1,7 +1,7 @@
-
 <?php
     // Include database connection or any necessary files
     require __DIR__ . '/../database/con_db.php';
+    //require __DIR__ . '/email_sender.php';
 
     // Check if status is provided
     if (isset($_GET['status'])) {
@@ -9,7 +9,7 @@
         $status = $_GET['status'];
 
         // Fetch event details based on status with facility_code
-        $query = "SELECT e.*, f.facility_code
+        $query = "SELECT e.*, f.facility_code, f.facility_name
                   FROM event_booking e
                   INNER JOIN facilities f ON e.facility_ID = f.facility_ID
                   WHERE e.event_status = ?";
@@ -19,7 +19,7 @@
         $result = $stmt->get_result();
 
         // Output table headers
-        echo "<table id='eventDetailsTable' style='width: 100%; border-collapse: collapse;'>";
+        echo "<table id='eventDetailsTable' style='width: 100%' >";
         echo "<tr><th>Event Code</th><th>Event Details</th><th>Status</th><th>Action</th></tr>";
 
         // Check if any rows are returned
@@ -31,19 +31,15 @@
                         echo $row['event_code'];
                     echo "</td>";
                     echo "<td class='event-details'>";
-                        echo $row['event_name'] . '<br>';
-                        echo $row['start_from'] . ' - ';
-                        echo $row['end_to'] . '<br>';
-                        echo $row['facility_code'] . '<br>';
-                        // Add a container for additional details
+                        echo "<p><span>Event Name: </span>" . $row['event_name'] . "</p>";
+                        echo "<p><span>Event Date: </span>" . $row['start_from'] . " - " . $row['end_to'] . "</p>";
+                        echo "<p><span>Facility: </span>" . $row['facility_code'] . " - " . '"' . $row['facility_name'] . '"' . "</p>";
                         echo "<div class='additional-details' style='display: none;'>";
-                        // Display all details when the container is clicked
-                        echo "Event Purpose: " . $row['event_purpose'] . "<br>";
-                        echo "Participants: " . $row['participants'] . "<br>";
-                        // Add more details as needed
+                            echo "<p><span>Event Purpose: <br></span>" . $row['event_purpose'] . "</p>";
+                            echo "<p><span>Participants: </span>" . $row['participants'] . "</p>";
                         echo "</div>";
                     echo "</td>";
-                    echo "<td>" . $row['event_status'] . "</td>";
+                    echo "<td style='text-transform: uppercase;'>" . $row['event_status'] . "</td>";
                     echo "<td>";
                         // Determine button display based on event status
                         if ($row['event_status'] == 'pending') {
@@ -68,9 +64,12 @@
     
     } else {
         // Status not provided
-        echo "<p style='width: 100%; border-collapse: collapse;'>Status not provided.</p>";
+        // echo "<p style='width: 100%; border-collapse: collapse;'>Status not provided.</p>";
+        echo "<tr><td colspan='3'>Status not PROVIDED.</td></tr>";
+
     }
 ?>
+
 
 <script>
     $(document).ready(function() {
@@ -97,6 +96,8 @@
                 });
             }
         })  
+
+
         // Remove Button Click Event
         $('.remove-button').click(function() {
             // Confirm removal action
@@ -130,89 +131,14 @@
             }
         });
 
-
-
-        // // Function to fetch and update user counts
-        // function fetchEventCounts() {
-        //     $.ajax({
-        //         url: 'event_filtering.php',
-        //         type: 'GET',
-        //         dataType: 'json',
-        //         success: function(response) {
-        //             $('.approved-events-count').text(response.approved);
-        //             $('.pending-events-count').text(response.pending);
-        //             $('.declined-events-count').text(response.declined);
-        //         },
-        //         error: function() {
-        //             console.log('Error occurred while fetching event counts.');
-        //         }
-        //     });
-        // }
-
-        // // Click event for "More Info" buttons
-        // $('.small-box-1').click(function() {
-        //     var status = $(this).data('event_status');
-        //     fetchEventDetails(status);
-        // });
-
-        // // Initial fetch for user counts
-        // fetchEventCounts();
-
-        //         // Submit form using AJAX
-        //         $('#search-form').submit(function(event) {
-        //     event.preventDefault(); // Prevent default form submission
-        //     var formData = $(this).serialize(); // Serialize form data
-        //     fetchEventSearch(formData); // Call function to fetch event Search
-        // });
-
-        // // Function to fetch and display event Search based on search criteria
-        // function fetchEventSearch(formData) {
-        //     $.ajax({
-        //         url: 'search.php', // PHP script handling the search
-        //         type: 'GET',
-        //         data: formData,
-        //         success: function(response) {
-        //             $('#eventDetailsTable tbody').html(response); // Display search results in table
-        //         },
-        //         error: function() {
-        //             console.log('Error occurred while fetching event details.');
-        //         }
-        //     });
-        // }
-
-
-        // // Event listener for filter form submission
-        // $('#filter-form').submit(function(event) {
-        //     event.preventDefault(); // Prevent default form submission
-
-        //     // Get filter parameters
-        //     var filterDate = $('#filter-date').val();
-        //     var facilityCode = $('#filter-facility').val();
-
-        //     // AJAX request to fetch filtered events
-        //     $.ajax({
-        //         url: 'event_filter.php',
-        //         type: 'GET',
-        //         data: {
-        //             'filter-date': filterDate,
-        //             'facilitycode': facilityCode
-        //         },
-        //         success: function(response) {
-        //             // Update the table with filtered events
-        //             $('#eventDetailsTable tbody').html(response);
-        //         },
-        //         error: function() {
-        //             console.log('Error occurred while fetching filtered events.');
-        //         }
-        //     });
-        // });
+        // Click event for displaying additional details
+        $('.event-details').click(function() {
+            $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
+        });
 
 
 
-        // // Click event for displaying additional details
-        // $('.event-details').click(function() {
-        //     $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
-        // });
+
     });
 
 </script>

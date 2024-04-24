@@ -24,8 +24,8 @@
                 <div class="right-section">
                     <div class="social-icons">
                         <a href="mailto:your.email@gmail.com"><i class="fa fa-envelope"></i></a>
-                        <a href="https://www.facebook.com/yourpage"><i class="fa fa-facebook"></i></a>
-                        <a href="https://plus.google.com/yourpage"><i class="fa fa-google"></i></a>
+                        <a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+                        <a href="https://www.google.com/"><i class="fa fa-google"></i></a>
                     </div>
                 </div>
             </div>
