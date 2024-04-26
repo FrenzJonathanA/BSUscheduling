@@ -148,48 +148,74 @@ try {
 
     <script>
        $(document).ready(function() {
-            // Remove Button Click Event
+        // Remove Button Click Event
             $('.remove-button').click(function() {
                 // Confirm removal action
-                if (confirm("Are you sure you want to remove this user?")) {
-                    // Get user ID from data attribute
-                    var userID = $(this).data('id');
-                    // Send AJAX request to update user status
-                    $.ajax({
-                        url: 'user_remove.php',
-                        type: 'POST',
-                        data: { user_id: userID },
-                        success: function(response) {
-                            // Reload page or update UI as needed
-                            window.location.reload(); // Example: Reload the page after successful removal
-                        },
-                        error: function() {
-                            console.log('Error occurred while updating user status.');
-                        }
-                    });
-                }
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You are about to remove this user!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, remove it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Get user ID from data attribute
+                        var userID = $(this).data('id');
+                        // Send AJAX request to update user status
+                        $.ajax({
+                            url: 'user_remove.php',
+                            type: 'POST',
+                            data: { user_id: userID },
+                            success: function(response) {
+                                console.log('Remove AJAX Success:', response);
+                                // Show success alert and redirect to users page
+                                showSuccessAlert('User Removed', 'The user has been removed successfully.');
+                            },
+                            error: function() {
+                                console.log('Error occurred while updating user status.');
+                                // Show error alert
+                                showErrorAlert('Error', 'An error occurred while removing the user.');
+                            }
+                        });
+                    }
+                });
             });
 
             // Approve Button Click Event
             $('.approve-button').click(function() {
                 // Confirm approval action
-                if (confirm("Are you sure you want to approve this user?")) {
-                    // Get user ID from data attribute
-                    var userID = $(this).data('id');
-                    // Send AJAX request to update user status
-                    $.ajax({
-                        url: 'user_approve.php',
-                        type: 'POST',
-                        data: { user_id: userID },
-                        success: function(response) {
-                            // Reload page or update UI as needed
-                            window.location.reload(); // Example: Reload the page after successful approval
-                        },
-                        error: function() {
-                            console.log('Error occurred while updating user status.');
-                        }
-                    });
-                }
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You are about to approve this user!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, approve it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Get user ID from data attribute
+                        var userID = $(this).data('id');
+                        // Send AJAX request to update user status
+                        $.ajax({
+                            url: 'user_approve.php',
+                            type: 'POST',
+                            data: { user_id: userID },
+                            success: function(response) {
+                                console.log('Approve AJAX Success:', response);
+                                // Show success alert and redirect to users page
+                                showSuccessAlert('User Approved', 'The user has been approved successfully.');
+                            },
+                            error: function() {
+                                console.log('Error occurred while updating user status.');
+                                // Show error alert
+                                showErrorAlert('Error', 'An error occurred while approving the user.');
+                            }
+                        });
+                    }
+                });
             });
 
             // Update button visibility based on user status

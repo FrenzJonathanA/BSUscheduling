@@ -242,12 +242,14 @@
                     displayEvents(data, selectedDate);
 
                     // Highlight the dates with events
-                    highlightDatesWithEvents(data);     
+                    // highlightDatesWithEvents(data);     
                 })
                 .fail(function(error) {
                     console.error('Failed to fetch events:', error);
                 });
             }
+
+            
 
             // Function to highlight dates with events
             function highlightDatesWithEvents(events) {
@@ -281,46 +283,96 @@
                     }
                 });
             }
-            
+
            // Function to display events in the carousel
+            // function displayEvents(events, selectedDate) {
+            //     const carouselContainer = document.getElementById('carousel-container');
+            //     if (events.length > 0) {
+            //         // Clear existing content
+            //         carouselContainer.innerHTML = '';
+
+            //         // Iterate over events and create carousel items
+            //         events.forEach(event => {
+            //             // Check if event status is not declined
+            //             if (event.event_status !== "declined") {
+            //                 const carouselItem = document.createElement('div');
+            //                 carouselItem.classList.add('carousel-item');
+            //                 carouselItem.innerHTML = `
+            //                     <div class="event-preview">
+            //                         <h3>${event.event_name}</h3>
+            //                         <p><span>Event Code: </span> ${event.event_code}</p>
+            //                         <p> <span>Duration:</span> ${event.start_from} - ${event.end_to}</p>
+            //                         <p><span>Status: </span> ${event.event_status}</p>
+            //                         <!-- Add other event details as needed -->
+            //                         <div class="event-details">
+            //                             <p><span>Event Purpose: </span><br> ${event.event_purpose}</p>
+            //                             <p><span>Participants: </span> ${event.participants}</p>
+            //                             <p><span>Host: </span> ${event.host_first_name} ${event.host_last_name}</p>
+            //                             <p><span>Facility: </span> ${event.facility_name}</p>
+            //                             <!-- Add other event details as needed -->
+            //                         </div>
+            //                     </div>
+                                
+            //                 `;
+            //                 carouselContainer.appendChild(carouselItem);
+
+            //                 // Event listener to toggle event details on click
+            //                 carouselItem.addEventListener('click', () => {
+            //                     const eventDetails = carouselItem.querySelector('.event-details');
+            //                     eventDetails.classList.toggle('show');
+            //                 });
+            //             }
+            //         });
+            //     } else {
+            //         // No events scheduled
+            //         carouselContainer.innerHTML = '<p>No events scheduled for this date.</p>';
+            //     }
+            // }
             function displayEvents(events, selectedDate) {
                 const carouselContainer = document.getElementById('carousel-container');
                 if (events.length > 0) {
+                    // Check if all events have declined status
+                    const allDeclined = events.every(event => event.event_status === "declined");
+
                     // Clear existing content
                     carouselContainer.innerHTML = '';
 
-                    // Iterate over events and create carousel items
-                    events.forEach(event => {
-                        // Check if event status is not declined
-                        if (event.event_status !== "declined") {
-                            const carouselItem = document.createElement('div');
-                            carouselItem.classList.add('carousel-item');
-                            carouselItem.innerHTML = `
-                                <div class="event-preview">
-                                    <h3>${event.event_name}</h3>
-                                    <p><span>Event Code: </span> ${event.event_code}</p>
-                                    <p> <span>Duration:</span> ${event.start_from} - ${event.end_to}</p>
-                                    <p><span>Status: </span> ${event.event_status}</p>
-                                    <!-- Add other event details as needed -->
-                                    <div class="event-details">
-                                        <p><span>Event Purpose: </span><br> ${event.event_purpose}</p>
-                                        <p><span>Participants: </span> ${event.participants}</p>
-                                        <p><span>Host: </span> ${event.host_first_name} ${event.host_last_name}</p>
-                                        <p><span>Facility: </span> ${event.facility_name}</p>
+                    // If all events have declined status, display "No events scheduled"
+                    if (allDeclined) {
+                        carouselContainer.innerHTML = '<p>No events scheduled for this date.</p>';
+                    } else {
+                        // Iterate over events and create carousel items
+                        events.forEach(event => {
+                            // Check if event status is not declined
+                            if (event.event_status !== "declined") {
+                                const carouselItem = document.createElement('div');
+                                carouselItem.classList.add('carousel-item');
+                                carouselItem.innerHTML = `
+                                    <div class="event-preview">
+                                        <h3>${event.event_name}</h3>
+                                        <p><span>Event Code: </span> ${event.event_code}</p>
+                                        <p> <span>Duration:</span> ${event.start_from} - ${event.end_to}</p>
+                                        <p><span>Status: </span> ${event.event_status}</p>
                                         <!-- Add other event details as needed -->
+                                        <div class="event-details">
+                                            <p><span>Event Purpose: </span><br> ${event.event_purpose}</p>
+                                            <p><span>Participants: </span> ${event.participants}</p>
+                                            <p><span>Host: </span> ${event.host_first_name} ${event.host_last_name}</p>
+                                            <p><span>Facility: </span> ${event.facility_name}</p>
+                                            <!-- Add other event details as needed -->
+                                        </div>
                                     </div>
-                                </div>
-                                
-                            `;
-                            carouselContainer.appendChild(carouselItem);
+                                `;
+                                carouselContainer.appendChild(carouselItem);
 
-                            // Event listener to toggle event details on click
-                            carouselItem.addEventListener('click', () => {
-                                const eventDetails = carouselItem.querySelector('.event-details');
-                                eventDetails.classList.toggle('show');
-                            });
-                        }
-                    });
+                                // Event listener to toggle event details on click
+                                carouselItem.addEventListener('click', () => {
+                                    const eventDetails = carouselItem.querySelector('.event-details');
+                                    eventDetails.classList.toggle('show');
+                                });
+                            }
+                        });
+                    }
                 } else {
                     // No events scheduled
                     carouselContainer.innerHTML = '<p>No events scheduled for this date.</p>';

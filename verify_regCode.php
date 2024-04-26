@@ -23,13 +23,13 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
 
     // Output the fetched data to the console
-    echo '<script>';
-    echo 'console.log("Fetched verification code:", '. json_encode($row['verification_code']). ');';
-    echo '</script>';
+    // echo '<script>';
+    // echo 'console.log("Fetched verification code:", '. json_encode($row['verification_code']). ');';
+    // echo '</script>';
 
     // Check if the verification code matches the one in the database
-    echo 'Verification code from form: '. $verification_code. '<br>';
-    echo 'Verification code from database: '. $row['verification_code']. '<br>';
+    // echo 'Verification code from form: '. $verification_code. '<br>';
+    // echo 'Verification code from database: '. $row['verification_code']. '<br>';
     if ($row['verification_code'] == $verification_code) {
         // Verification successful
         // Update the user's status in the database
@@ -48,15 +48,27 @@ if ($result->num_rows > 0) {
             exit;
         } else {
             // Error in sending registration notification email
-            echo "Error in sending registration notification email.";
+            // echo "Error in sending registration notification email.";
+            $_SESSION['error_message'] = "Error in sending registration notification email.";
+            // Redirect back to the verification page
+            header('Location: verify_registration.php?email=' . $_GET['email']);
+            exit;
         }
     } else {
         // Verification code is incorrect
-        echo "Verification code is incorrect.";
+        // echo "Verification code is incorrect.";
+        $_SESSION['error_message'] = "Verification code is incorrect.";
+        // Redirect back to the verification page
+        header('Location: verify_registration.php?email=' . $_GET['email']);
+        exit;
     }
 } else {
     // Verification code not found in the database
-    echo "Verification code not found in the database.";
+    // echo "Verification code not found in the database.";
+    $_SESSION['error_message'] = "Verification code not found in the database.";
+    // Redirect back to the verification page
+    header('Location: verify_registration.php?email=' . $_GET['email']);
+    exit;
 }
 
 // Close database connection

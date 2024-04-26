@@ -99,8 +99,84 @@
     function goBack() {
     window.history.back();
     }
-    // Click event for displaying additional details
-    $('.event-details').click(function() {
-        $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
-    });
+
+    $(document).ready(function() {
+
+        // Remove Button Click Event
+        $('.remove-button').click(function() {
+            // Confirm removal action
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You are about to remove this event!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, remove it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Get event ID from data attribute
+                    var eventID = $(this).data('id');
+                    console.log("Event ID:", eventID); // Check if event ID is retrieved correctly
+                    // Send AJAX request to update event status
+                    $.ajax({
+                        url: 'event_remove.php',
+                        type: 'POST',
+                        data: { event_id: eventID },
+                        success: function(response) {
+                            console.log('Remove AJAX Success:', response);
+                            // Show success alert and redirect to events page
+                            showSuccessAlert('Event Removed', 'The event has been removed successfully.');
+                        },
+                        error: function() {
+                            console.log('Error occurred while updating event status.');
+                            // Show error alert
+                            showErrorAlert('Error', 'An error occurred while removing the event.');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Approve Button Click Event
+        $('.approve-button').click(function() {
+            // Confirm approval action
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You are about to approve this event!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, approve it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Get event ID from data attribute
+                    var eventID = $(this).data('id');
+                    console.log("Event ID:", eventID);
+                    // Send AJAX request to update event status
+                    $.ajax({
+                        url: 'event_approve.php',
+                        type: 'POST',
+                        data: { event_id: eventID },
+                        success: function(response) {
+                            console.log('Approve AJAX Success:', response);
+                            // Show success alert and redirect to events page
+                            showSuccessAlert('Event Approved', 'The event has been approved successfully.');
+                        },
+                        error: function() {
+                            console.log('Error occurred while updating event status.');
+                            // Show error alert
+                            showErrorAlert('Error', 'An error occurred while approving the event.');
+                        }
+                    });
+                }
+            });
+        });
+        // Click event for displaying additional details
+        $('.event-details').click(function() {
+            $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
+        });
+
+    }); 
 </script>

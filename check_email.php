@@ -1,41 +1,28 @@
 <?php
-// Include database connection
-include 'database/con_db.php';
+    // Include database connection
+    include 'database/con_db.php';
 
-// Check if the email is already taken
-function isEmailTaken($conn, $email) {
-    // Prepare and execute the query to check if email exists
-    $sql = "SELECT COUNT(*) AS count FROM user WHERE email = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Get email from POST request
+    $email = $_POST['email'];
 
-    if ($result) {
-        $row = $result->fetch_assoc();
-        if ($row['count'] > 0) {
-            return true; // Email is already in use
-        } else {
-            return false; // Email is available
-        }
+    // Check if email exists in the database
+    $sql_check_email = "SELECT COUNT(*) AS count FROM user WHERE email = ?";
+    $stmt_check_email = $conn->prepare($sql_check_email);
+    $stmt_check_email->bind_param("s", $email);
+    $stmt_check_email->execute();
+    $result_check_email = $stmt_check_email->get_result();
+    $row_check_email = $result_check_email->fetch_assoc();
+
+    if ($row_check_email['count'] > 0) {
+        // Email exists
+        echo 'exists';
+        
     } else {
-        return null; // Error in query execution
+        // Email does not exist
+        echo 'not_exists';
     }
-}
 
-// Get email from the POST request
-$email = $_POST['email'];
-
-// Check if the email is already taken
-if (isEmailTaken($conn, $email)) {
-    // Email is already taken
-    echo 'taken';
-} else {
-    // Email is available
-    echo 'available';
-}
-
-// Close database connection
-$stmt->close();
-$conn->close();
+    // Close database connection
+    $stmt_check_email->close();
+    $conn->close();
 ?>

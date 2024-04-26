@@ -67,7 +67,10 @@ body {
   display: flex;
   margin-right: 20px;
 }
-.header .container .header-wrapper .search-bar button {
+.header .container .header-wrapper .search-bar form {
+  margin-bottom: 0px;
+}
+.header .container .header-wrapper .search-bar form button {
   padding: 8px 12px;
   background-color: #555; /* Change button color */
   color: #fff; /* Change text color */
@@ -76,10 +79,10 @@ body {
   cursor: pointer;
   margin: 0 0;
 }
-.header .container .header-wrapper .search-bar button:hover {
+.header .container .header-wrapper .search-bar form button:hover {
   background-color: #777;
 }
-.header .container .header-wrapper .search-bar input[type=text] {
+.header .container .header-wrapper .search-bar form input[type=text] {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -612,6 +615,14 @@ footer .fcontainer .footer-content .right-section .social-icons a:hover {
 .registration .container .reg-wrapper form input[type=submit]:hover {
   background-color: #0056b3;
 }
+.registration .container .reg-wrapper form span {
+  color: red;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+  padding: 5px;
+  float: right;
+}
 
 .verifyReg .container {
   max-width: 100%;
@@ -664,6 +675,14 @@ footer .fcontainer .footer-content .right-section .social-icons a:hover {
   border-radius: 3px;
   margin-right: 10px;
 }
+.verifyReg .container .verifyReg-wrapper .verifyReg-form form span {
+  color: red;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+  padding: 5px;
+  float: right;
+}
 
 .log-form .container {
   max-width: 100%;
@@ -703,8 +722,9 @@ footer .fcontainer .footer-content .right-section .social-icons a:hover {
   font-weight: bold;
 }
 .log-form .container .log-wrapper .form-group input[type=email],
-.log-form .container .log-wrapper .form-group input[type=password] {
-  width: 95%;
+.log-form .container .log-wrapper .form-group input[type=password],
+.log-form .container .log-wrapper .form-group input[type=text i] {
+  min-width: 95%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 3px;
@@ -721,9 +741,18 @@ footer .fcontainer .footer-content .right-section .social-icons a:hover {
   cursor: pointer;
   font-size: 18px;
   font-weight: 900;
+  margin-bottom: 20px;
 }
 .log-form .container .log-wrapper button:hover {
   background-color: #0056b3;
+}
+.log-form .container .log-wrapper .error-message {
+  color: red;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+  background-color: rgba(128, 128, 128, 0.386);
+  padding: 5px;
 }
 
 .forgetPass-form .container {
@@ -856,11 +885,6 @@ footer .fcontainer .footer-content .right-section .social-icons a:hover {
   margin-top: 10px;
   text-transform: uppercase;
 }
-.newpass .container .newpass-wrapper .reset-form .error-message {
-  color: red;
-  font-weight: bold;
-  margin-top: 10px;
-}
 .newpass .container .newpass-wrapper .reset-form form input[type=hidden] {
   width: 75%;
   padding: 8px;
@@ -887,6 +911,30 @@ footer .fcontainer .footer-content .right-section .social-icons a:hover {
 .newpass .container .newpass-wrapper .reset-form form .form-group button {
   display: flex;
   justify-content: center;
+}
+.newpass .container .newpass-wrapper .reset-form button {
+  display: block;
+  margin: 15px auto;
+  width: 60%;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  background-color: #007bff;
+  color: #000;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 900;
+}
+.newpass .container .newpass-wrapper .reset-form button:hover {
+  background-color: #0056b3;
+}
+.newpass .container .newpass-wrapper .newPass-container {
+  color: red;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+  background-color: rgba(128, 128, 128, 0.386);
+  padding: 5px;
 }
 
 .request .container {
@@ -934,7 +982,7 @@ footer .fcontainer .footer-content .right-section .social-icons a:hover {
 .request .container .req-wrapper .form-group textarea {
   height: 100px;
 }
-.request .container .req-wrapper input[type=submit] {
+.request .container .req-wrapper .req-button input[type=submit], .request .container .req-wrapper .req-button a {
   width: 100%;
   padding: 10px;
   background-color: #007bff;
@@ -945,7 +993,20 @@ footer .fcontainer .footer-content .right-section .social-icons a:hover {
   border-radius: 5px;
   cursor: pointer;
 }
-.request .container .req-wrapper input[type=submit]:hover {
+.request .container .req-wrapper .req-button input[type=submit]:hover, .request .container .req-wrapper .req-button a:hover {
+  background-color: #0056b3;
+}
+.request .container .req-wrapper .req-button button {
+  border: none;
+  border-radius: 3px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.request .container .req-wrapper .req-button button:hover {
   background-color: #0056b3;
 }
 

@@ -1,60 +1,5 @@
 
 
-<?php
-    require 'database/con_db.php';
-
-
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $confirmPass = $_POST['confirm_password'];
-
-        if ($password === $confirmPass) {
-            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            $stmt = $conn->prepare("UPDATE user SET password =?, confirm_pass =?, reset_code = NULL WHERE email =?");
-            $stmt->bind_param("sss", $hashedPassword, $hashedPassword, $email);
-            $stmt->execute();
-
-            echo "Password updated successfully. You can now <a href='login_form.php'>login</a> with your new password.";
-        } else {
-            echo "Passwords do not match.";
-        }
-    }
-
-    /*if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $confirmPass = $_POST['confirm_password'];
-
-        if ($password === $confirmPass) {
-            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            $stmt = $conn->prepare("UPDATE user SET password =?, confirm_pass =?, reset_code = NULL WHERE email =?");
-            $stmt->bind_param("sss", $hashedPassword, $hashedPassword, $email);
-            $stmt->execute();
-
-            if ($stmt->affected_rows > 0) {
-                echo "<script>Swal.fire({
-                        icon: 'success',
-                        title: 'Password updated successfully',
-                        text: 'Password updated successfully. You can now <a href='login_form.php'>login</a> with your new password.'
-                    })</script>";
-            } else {
-                echo "<script>Swal.fire({
-                        icon: 'error',
-                        title: 'Error updating password',
-                        text: 'Please try again later.'
-                    })</script>";
-            }
-        } else {
-            echo "<script>Swal.fire({
-                    icon: 'error',
-                    title: 'Passwords do not match',
-                    text: 'Please try again.'
-                })</script>";
-        }
-    }*/
-?>
-
 
 <?php 
 
@@ -162,13 +107,67 @@
                     </div>
                     <button type="submit">Update Password</button>
                 </form>
+                <div class="newPass-container">
+                    <?php
+                        require 'database/con_db.php';
+
+
+                        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                            $email = $_POST['email'];
+                            $password = $_POST['password'];
+                            $confirmPass = $_POST['confirm_password'];
+
+                            if ($password === $confirmPass) {
+                                $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+                                $stmt = $conn->prepare("UPDATE user SET password =?, confirm_pass =?, reset_code = NULL WHERE email =?");
+                                $stmt->bind_param("sss", $hashedPassword, $hashedPassword, $email);
+                                $stmt->execute();
+
+                                echo "Password updated successfully. You can now <a href='login_form.php'>login</a> with your new password.";
+                            } else {
+                                echo "Passwords do not match.";
+                            }
+                        }
+
+                        /*if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                            $email = $_POST['email'];
+                            $password = $_POST['password'];
+                            $confirmPass = $_POST['confirm_password'];
+
+                            if ($password === $confirmPass) {
+                                $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+                                $stmt = $conn->prepare("UPDATE user SET password =?, confirm_pass =?, reset_code = NULL WHERE email =?");
+                                $stmt->bind_param("sss", $hashedPassword, $hashedPassword, $email);
+                                $stmt->execute();
+
+                                if ($stmt->affected_rows > 0) {
+                                    echo "<script>Swal.fire({
+                                            icon: 'success',
+                                            title: 'Password updated successfully',
+                                            text: 'Password updated successfully. You can now <a href='login_form.php'>login</a> with your new password.'
+                                        })</script>";
+                                } else {
+                                    echo "<script>Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error updating password',
+                                            text: 'Please try again later.'
+                                        })</script>";
+                                }
+                            } else {
+                                echo "<script>Swal.fire({
+                                        icon: 'error',
+                                        title: 'Passwords do not match',
+                                        text: 'Please try again.'
+                                    })</script>";
+                            }
+                        }*/
+                    ?>
+                </div>
             </div>
         </div>
     </div>
 </div>    
-<div class="newPass-container">
 
-</div>
 
 
 <?php 

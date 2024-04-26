@@ -1,35 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="scss/style.scss"> 
-
-</head>
-<body>
-    <div class="background-image"></div>
-    <div class="header">
-        <div class="container">
-            <div class="header-wrapper">
-                <div class="univ-head">
-                    <div class="logo">
-                        <img src="static/image/bsu_logo.png" alt="Logo">
-                    </div>
-    
-                    <div class="site-name">
-                        <h1>BATANGAS STATE UNIVERSITY</h1>
-                        <h4>The National Engineering University</h4>
-                    </div>
-                </div>
-                <div class="search-bar">
-                    <input type="text" placeholder="Search...">
-                    <button type="submit">Search</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
     <?php 
 
         $pageTitle = "LogIN";
@@ -37,11 +5,13 @@
         include('header.php'); 
     
     ?> 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    
     <div class="log-form">
         <div class="container">
             <div class="log-wrapper">
                 <h2>Login</h2>
+                
                 <form action="login.php" method="POST">
                     <div class="form-group">
                         <label for="email">Email:</label>
@@ -49,13 +19,25 @@
                     </div>
                     <div class="form-group">
                         <label for="password">Password:</label>
-                        <input type="password" id="password" name="password" required>
+                        <input type="password" id="password" name="password" required><br>
+                        <input type="checkbox" id="showPassword"> Show Password<br>
                     </div>
+
+                    
                     <button type="submit">Login</button>
-                    <div class="text-center">
+                    
+                </form>
+                <?php
+                    // Check if error message is set in session
+                    if (isset($_SESSION['error_message'])) {
+                        echo '<div class="error-message">' . $_SESSION['error_message'] . '</div>';
+                        // Unset the error message to prevent displaying it again on subsequent page loads
+                        unset($_SESSION['error_message']);
+                    }
+                ?>
+                <div class="text-center">
                         <a href="forgot_password.php">Forgot Password?</a>
                     </div>
-                </form>
                 <div class="text-center">
                     <a href="registration.php">Don't have an account? Sign Up</a>
                 </div>
@@ -76,6 +58,17 @@
 
     ?>
 
+<script>
+    document.getElementById("showPassword").addEventListener("change", function() {
+        console.log("Checkbox clicked");
+        var passwordInput = document.getElementById("password");
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    });
+</script>
 
 </body>
 

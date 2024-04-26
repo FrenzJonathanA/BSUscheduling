@@ -73,8 +73,9 @@ body {
         .search-bar{
             display: flex;
             margin-right: 20px;
-
-            button{
+            form{
+              margin-bottom: 0px;
+              button{
                 padding: 8px 12px;
                 background-color: #555; /* Change button color */
                 color: #fff; /* Change text color */
@@ -94,6 +95,9 @@ body {
                 border-radius: 5px;
                 //margin-right: 10px;
             }
+            }
+
+            
         }
         .login-logout {
           a {
@@ -1015,6 +1019,17 @@ footer {
           background-color: #0056b3;
           }
         }
+        span{
+          color: red;
+          font-size: 16px;
+          margin-bottom: 10px;
+          text-align: center;
+          //background-color: rgba(128, 128, 128, 0.386);
+          padding: 5px;
+          float: right;
+          
+
+        }
       }
     }
   }
@@ -1067,6 +1082,17 @@ footer {
             border: 1px solid #ccc;
             border-radius: 3px;
             margin-right: 10px;
+          }
+          span{
+            color: red;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-align: center;
+            //background-color: rgba(128, 128, 128, 0.386);
+            padding: 5px;
+            float: right;
+            
+  
           }
           
         }
@@ -1126,8 +1152,9 @@ footer {
           font-weight: bold;
         }
         input[type="email"],
-        input[type="password"] {
-          width: 95%;
+        input[type="password"],
+        input[type="text" i] {
+          min-width: 95%;
           padding: 8px;
           border: 1px solid #ccc;
           border-radius: 3px;
@@ -1145,10 +1172,19 @@ footer {
         cursor: pointer;
         font-size: 18px;
         font-weight: 900;
+        margin-bottom: 20px;
         &:hover{
           background-color: #0056b3;
-        }
+        } 
       }
+      .error-message {
+        color: red;
+        font-size: 16px;
+        margin-bottom: 10px;
+        text-align: center;
+        background-color: rgba(128, 128, 128, 0.386);
+        padding: 5px;
+    }
     }
   }
 }
@@ -1321,11 +1357,7 @@ footer {
           margin-top: 10px;
           text-transform: uppercase;
         }
-        .error-message {
-          color: red;
-          font-weight: bold;
-          margin-top: 10px;
-        }
+        
         
         form{
           //display: flex;
@@ -1362,22 +1394,31 @@ footer {
           
           
         }
-        // button{
-        //   display: block;
-        //   margin: 15px auto;
-        //   width: 60%;
-        //   padding: 10px;
-        //   border: none;
-        //   border-radius: 3px;
-        //   background-color: #007bff;
-        //   color: #000;
-        //   cursor: pointer;
-        //   font-size: 14px;
-        //   font-weight: 900;
-        //   &:hover{
-        //     background-color: #0056b3;
-        //   }
-        // }
+        button{
+          display: block;
+          margin: 15px auto;
+          width: 60%;
+          padding: 10px;
+          border: none;
+          border-radius: 3px;
+          background-color: #007bff;
+          color: #000;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 900;
+          &:hover{
+            background-color: #0056b3;
+          }
+        }
+      }
+      .newPass-container{
+        color: red;
+        font-size: 16px;
+        margin-bottom: 10px;
+        text-align: center;
+        background-color: rgba(128, 128, 128, 0.386);
+        padding: 5px;
+
       }
     }
   }
@@ -1426,22 +1467,46 @@ footer {
         textarea{
           height: 100px;
         }
+        
       }
-      input[type="submit"] {
-        width: 100%;
-        padding: 10px;
-        background-color: #007bff;
-        font-size: 18px;
-        font-weight: 900;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    
-        &:hover {
-            background-color: #0056b3;
+      .req-button{
+        input[type="submit"], a {
+          width: 100%;
+          padding: 10px;
+          background-color: #007bff;
+          font-size: 18px;
+          font-weight: 900;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+      
+          &:hover {
+              background-color: #0056b3;
+          }
+        }
+        
+          button{
+            //display: block;
+            //width: 100%;
+            //padding: 10px;
+            border: none;
+            border-radius: 3px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            //font-weight: 900;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            // float: right;
+            &:hover{
+              background-color: #0056b3;
+            }
+          
         }
       }
+
 
     }
   }

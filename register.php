@@ -1,5 +1,9 @@
 <?php
 
+
+// Start the session
+session_start();
+
 // Include database connection
 include 'database/con_db.php';
 
@@ -32,20 +36,6 @@ if($password!== $confirm_pass) {
 // Hash the password
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-// Check if email is already in use
-$sql = "SELECT COUNT(*) AS count FROM user WHERE email = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
-
-if($row['count'] > 0){
-    echo "Email is already in use.";
-    header('Location: registration.php');
-    exit();
-}
-
 // Generate a random verification code
 $verification_code = rand(100000, 999999);
 
@@ -53,7 +43,7 @@ $verification_code = rand(100000, 999999);
 $sql = "INSERT INTO user (first_name, last_name, email,password, role, contact_number, verification_code, employee_ID, department_ID) 
         VALUES (?,?,?,?,?,?,?,?,?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("sssssssss", $first_name, $last_name, $email, $hashed_password, $role, $contact_number, $verification_code, $employee_ID, $department_ID);
+$stmt->bind_param("sssssssss", $first_name, $last_name, $email, $password, $role, $contact_number, $verification_code, $employee_ID, $department_ID);
 
 if ($stmt->execute()) {
     // Registration successful

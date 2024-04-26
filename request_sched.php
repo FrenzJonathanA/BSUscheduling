@@ -29,9 +29,10 @@ if (isset($_SESSION['user_ID'])) {
         $end_date_mysql = $end_date->format('Y-m-d H:i:s');
 
         // Check if the selected time slot is available
-        $sql = "SELECT COUNT(*) as count FROM event_booking WHERE facility_ID = ? AND (?, ?) OVERLAPS (start_from, end_to)";
+        $sql = "SELECT COUNT(*) as count FROM event_booking
+                WHERE facility_ID = ? AND (start_from <= ? AND end_to >= ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("isss", $facility_ID, $start_date_mysql, $end_date_mysql);
+        $stmt->bind_param("iss", $facility_ID, $end_date_mysql, $start_date_mysql);
         $stmt->execute();
         $stmt->store_result();
         $stmt->bind_result($count);

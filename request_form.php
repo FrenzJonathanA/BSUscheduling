@@ -82,13 +82,16 @@
                     <label for="participants">Participants:</label>
                     <input type="text" id="participants" name="participants" required>
                 </div>
-                <button type="submit">Submit</button>
+                <div class="req-button">
+                    <a href=""><button type="submit">Submit</button></a>
+                    <a href="cal-sample.php"><button type="submit">View Calendar</button></a>
+                </div>
             </form>
-            <a href="cal-sample.php"><button type="submit">back to calendar</button></a>
-
         </div>
     </div>
 </div>
+
+
 <?php 
 include('./footer.php'); 
 ?>
@@ -109,4 +112,48 @@ include('./footer.php');
         }
         return true;
     }
+    document.getElementById('schedule-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Retrieve form data
+        const eventName = document.getElementById('event-name').value;
+        const eventPurpose = document.getElementById('event-purpose').value;
+        const facilityID = document.getElementById('facility').value;
+        const startDateStr = document.getElementById('start-date').value;
+        const endDateStr = document.getElementById('end-date').value;
+        const participants = document.getElementById('participants').value;
+
+        // Convert start_date and end_date strings to valid DateTime objects
+        const startDate = DateTime::createFromFormat('Y-m-d\TH:i', startDateStr);
+        const endDate = DateTime::createFromFormat('Y-m-d\TH:i', endDateStr);
+
+        // Check if DateTime objects were successfully created
+        if (startDate && endDate) {
+            // Add 30 minutes to the end time
+            endDate.add(new DateInterval('PT30M'));
+            const endDateStr = endDate.format('Y-m-d\TH:i');
+
+            // Format DateTime objects into MySQL datetime format
+            const startDateMySQL = startDate.format('Y-m-d H:i:s');
+            const endDateMySQL = endDate.format('Y-m-d H:i:s');
+
+            // Check if the selected time slot is available
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'request_sched.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200 && xhr.responseText === 'Error: This time slot is unavailable. Please choose a different time.') {
+                    alert(xhr.responseText);
+                } else if (xhr.status === 200) {
+                    alert(xhr.responseText);
+                    document.getElementById('schedule-form').reset();
+                } else {
+                    console.log('Error: ' + xhr.statusText);
+                }
+            };
+            xhr.send('event_name=' + eventName + '&event_purpose=' + eventPurpose + '&facility_ID=' + facilityID + '&start_from=' + startDateMySQL + '&end_to=' + endDateMySQL + '&participants=' + participants);
+        } else {
+            console.log('Error: Invalid date format');
+        }
+    });
 </script>

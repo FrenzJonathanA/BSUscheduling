@@ -1,5 +1,6 @@
 
 <?php 
+    
 
     $pageTitle = "Verify Email";
     
@@ -16,6 +17,14 @@
                 <form action="verify_regCode.php" method="post">
                     <input type="hidden" name="email" value="<?php echo $_GET['email']; ?>">
                     <input type="text" name="verification_code" id="verification_code" required>
+                    <?php
+                        // Display error message if it exists
+                        if (isset($_SESSION['error_message'])) {
+                            echo '<div class="error-message">' . $_SESSION['error_message'] . '</div>';
+                            // Unset the error message to prevent displaying it again on subsequent page loads
+                            unset($_SESSION['error_message']);
+                        }
+                    ?>
                     <button type="submit">Verify</button>
                 </form>
             </div>    
