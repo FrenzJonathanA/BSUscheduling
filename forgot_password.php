@@ -6,6 +6,7 @@
 
 ?>
 
+<link rel="stylesheet" href="scss/style.css"> 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <div class="forgetPass-form">
     <div class="container">

@@ -9,8 +9,9 @@
         $status = $_GET['status'];
 
         // Fetch event details based on status with facility_code
-        $query = "SELECT e.*, f.facility_code, f.facility_name
+        $query = "SELECT e.*, f.facility_code, f.facility_name, u.first_name, u.last_name
                   FROM event_booking e
+                  INNER JOIN user u ON e.user_ID = u.user_ID
                   INNER JOIN facilities f ON e.facility_ID = f.facility_ID
                   WHERE e.event_status = ?";
         $stmt = $conn->prepare($query);
@@ -36,6 +37,7 @@
                         echo "<p><span>Facility: </span>" . $row['facility_code'] . " - " . '"' . $row['facility_name'] . '"' . "</p>";
                         echo "<div class='additional-details' style='display: none;'>";
                             echo "<p><span>Event Purpose: <br></span>" . $row['event_purpose'] . "</p>";
+                            echo "<p><span>Event Host: </span>" . $row['first_name'] . " " . $row['last_name'] . "</p>";
                             echo "<p><span>Participants: </span>" . $row['participants'] . "</p>";
                         echo "</div>";
                     echo "</td>";
@@ -72,8 +74,7 @@
 
 <script>
     $(document).ready(function() {
-        // Remove Button Click Event
-        $('.remove-button').click(function() {
+        $(document).on('click', '.remove-button', function() {
             // Confirm removal action
             Swal.fire({
                 title: 'Are you sure?',
@@ -109,7 +110,7 @@
         });
 
         // Approve Button Click Event
-        $('.approve-button').click(function() {
+        $(document).on('click', '.approve-button', function() {
             // Confirm approval action
             Swal.fire({
                 title: 'Are you sure?',
@@ -142,7 +143,7 @@
                     });
                 }
             });
-        });   
+        });  
 
         // Update button visibility based on user status
         $('.approve-button, .remove-button').each(function() {
@@ -152,102 +153,109 @@
             }
         });
 
+        // Function to fetch and display event details based on status
+        function fetchEventDetails(status) {
+            // Check if status is provided
+            if (status) {
+                $.ajax({
+                    url: 'event_fetch.php',
+                    type: 'GET',
+                    data: { status: status },
+                    success: function(response) {
+                        $('#eventDetailsTable tbody').html(response);
+                        console.log('current status.', status);
+                    },
+                    error: function() {
+                        console.log('Error occurred while fetching event details.');
+                    }
+                });
+            }
+        }
 
-            // Click event for displaying additional details
+
+        // Function to fetch and update user counts
+        function fetchEventCounts() {
+            $.ajax({
+                url: 'event_filtering.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    $('.approved-events-count').text(response.approved);
+                    $('.pending-events-count').text(response.pending);
+                    $('.declined-events-count').text(response.declined);
+                },
+                error: function() {
+                    console.log('Error occurred while fetching event counts.');
+                }
+            });
+        }
+
+        // Click event for "More Info" buttons
+        $('.small-box-1').click(function() {
+            var status = $(this).data('status');
+            fetchEventDetails(status);
+        });
+
+        // Initial fetch for user counts
+        fetchEventCounts();
+
+
+        // Submit form using AJAX
+        $('#search-form').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+            var formData = $(this).serialize(); // Serialize form data
+            fetchEventSearch(formData); // Call function to fetch event Search
+        });
+
+        // Function to fetch and display event Search based on search criteria
+        function fetchEventSearch(formData) {
+            $.ajax({
+                url: 'search.php', // PHP script handling the search
+                type: 'GET',
+                data: formData,
+                success: function(response) {
+                    $('#eventDetailsTable tbody').html(response); // Display search results in table
+                },
+                error: function() {
+                    console.log('Error occurred while fetching event details.');
+                }
+            });
+        }
+
+
+        // Event listener for filter form submission
+        $('#filter-form').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get filter parameters
+            var filterDate = $('#filter-date').val();
+            var facilityCode = $('#filter-facility').val();
+
+            // AJAX request to fetch filtered events
+            $.ajax({
+                url: 'event_filter.php',
+                type: 'GET',
+                data: {
+                    'filter-date': filterDate,
+                    'facilitycode': facilityCode
+                },
+                success: function(response) {
+                    // Update the table with filtered events
+                    $('#eventDetailsTable tbody').html(response);
+                },
+                error: function() {
+                    console.log('Error occurred while fetching filtered events.');
+                }
+            });
+        });
+        // Click event for displaying additional details
+        // $(document).on('click', '.event-details', function() {
+        //     $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
+        // });
         $('.event-details').click(function() {
             $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
         });
 
-
-        // Function to fetch and display event details based on status
-        // function fetchEventDetails(status) {
-        //     $.ajax({
-        //         url: 'event_fetch.php',
-        //         type: 'GET',
-        //         data: { status: event_status },
-        //         success: function(response) {
-        //             $('#eventDetailsTable tbody').html(response);
-        //         },
-        //         error: function() {
-        //             console.log('Error occurred while fetching event details.');
-        //         }
-        //     });
-        // }
-
-        // // Function to fetch and update user counts
-        // function fetchEventCounts() {
-        //     $.ajax({
-        //         url: 'event_filtering.php',
-        //         type: 'GET',
-        //         dataType: 'json',
-        //         success: function(response) {
-        //             $('.approved-events-count').text(response.approved);
-        //             $('.pending-events-count').text(response.pending);
-        //             $('.declined-events-count').text(response.declined);
-        //         },
-        //         error: function() {
-        //             console.log('Error occurred while fetching event counts.');
-        //         }
-        //     });
-        // }
-
-        // // Click event for "More Info" buttons
-        // $('.small-box-1').click(function() {
-        //     var status = $(this).data('event_status');
-        //     fetchEventDetails(status);
-        // });
-
-        // Initial fetch for user counts
-        // fetchEventCounts();
-
-        // Submit form using AJAX
-        // $('#search-form').submit(function(event) {
-        //     event.preventDefault(); // Prevent default form submission
-        //     var formData = $(this).serialize(); // Serialize form data
-        //     fetchEventSearch(formData); // Call function to fetch event Search
-        // });
-
-        // // Function to fetch and display event Search based on search criteria
-        // function fetchEventSearch(formData) {
-        //     $.ajax({
-        //         url: 'search.php', // PHP script handling the search
-        //         type: 'GET',
-        //         data: formData,
-        //         success: function(response) {
-        //             $('#eventDetailsTable tbody').html(response); // Display search results in table
-        //         },
-        //         error: function() {
-        //             console.log('Error occurred while fetching event details.');
-        //         }
-        //     });
-        // }
-
-
-        // // Event listener for filter form submission
-        // $('#filter-form').submit(function(event) {
-        //     event.preventDefault(); // Prevent default form submission
-
-        //     // Get filter parameters
-        //     var filterDate = $('#filter-date').val();
-        //     var facilityCode = $('#filter-facility').val();
-
-        //     // AJAX request to fetch filtered events
-        //     $.ajax({
-        //         url: 'event_filter.php',
-        //         type: 'GET',
-        //         data: {
-        //             'filter-date': filterDate,
-        //             'facilitycode': facilityCode
-        //         },
-        //         success: function(response) {
-        //             // Update the table with filtered events
-        //             $('#eventDetailsTable tbody').html(response);
-        //         },
-        //         error: function() {
-        //             console.log('Error occurred while fetching filtered events.');
-        //         }
-        //     });
-        // });
     });
 
 </script>

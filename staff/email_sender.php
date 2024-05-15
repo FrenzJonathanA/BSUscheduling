@@ -17,12 +17,12 @@
         $mail->IsSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'frenzjonathan5958@gmail.com';
-        $mail->Password = 'kdxr onib hnoc nldy';
+        $mail->Username = 'bsuevent.scheduling@gmail.com';
+        $mail->Password = 'dlko mvgy wiul fshr';
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
-        $mail->setFrom('frenzjonathan5958@gmail.com', 'FRENZ JONATHAN ALULOD');
+        $mail->setFrom('bsuevent.scheduling@gmail.com', 'Facility Management');
         $mail->addAddress($email);
 
         $mail->isHTML(true);
@@ -42,11 +42,11 @@
         $mail->Host = 'smtp.gmail.com';
         $mail->Port = 587;
         $mail->SMTPAuth = true;
-        $mail->Username = 'frenzjonathan5958@gmail.com';
-        $mail->Password = 'kdxr onib hnoc nldy';
+        $mail->Username = 'bsuevent.scheduling@gmail.com';
+        $mail->Password = 'dlko mvgy wiul fshr';
         $mail->SMTPSecure = 'tls';
 
-        $mail->setFrom('frenzjonathan5958@gmail.com', 'Facility Management');
+        $mail->setFrom('bsuevent.scheduling@gmail.com', 'Facility Management');
         $mail->addAddress($email);
 
         $mail->isHTML(true);
@@ -80,7 +80,7 @@
     //         $mail->Port = 587;
     //         $mail->SMTPAuth = true;
     //         $mail->Username = 'frenzjonathan5958@gmail.com';
-    //         $mail->Password = 'kdxr onib hnoc nldy';
+    //         $mail->Password = 'dlko mvgy wiul fshr';
     //         $mail->SMTPSecure = 'tls';
 
     //         $mail->setFrom('frenzjonathan5958@gmail.com', 'Facility Management');

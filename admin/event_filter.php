@@ -93,9 +93,92 @@ if (isset($_GET['filter-date']) || isset($_GET['facilitycode'])) {
       
 <script>
     function goBack() {
-    window.history.back();
+        window.history.back();
     }
+    $(document).on('click', '.remove-button', function() {
+        // Confirm removal action
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to remove this event!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, remove it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Get event ID from data attribute
+                var eventID = $(this).data('id');
+                console.log("Event ID:", eventID); // Check if event ID is retrieved correctly
+                // Send AJAX request to update event status
+                $.ajax({
+                    url: 'event_remove.php',
+                    type: 'POST',
+                    data: { event_id: eventID },
+                    success: function(response) {
+                        console.log('Remove AJAX Success:', response);
+                        // Show success alert and redirect to events page
+                        showSuccessAlert('Event Removed', 'The event has been removed successfully.');
+                    },
+                    error: function() {
+                        console.log('Error occurred while updating event status.');
+                        // Show error alert
+                        showErrorAlert('Error', 'An error occurred while removing the event.');
+                    }
+                });
+            }
+        });
+    });
+
+    // Approve Button Click Event
+    $(document).on('click', '.approve-button', function() {
+        // Confirm approval action
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to approve this event!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, approve it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Get event ID from data attribute
+                var eventID = $(this).data('id');
+                console.log("Event ID:", eventID);
+                // Send AJAX request to update event status
+                $.ajax({
+                    url: 'event_approve.php',
+                    type: 'POST',
+                    data: { event_id: eventID },
+                    success: function(response) {
+                        console.log('Approve AJAX Success:', response);
+                        // Show success alert and redirect to events page
+                        showSuccessAlert('Event Approved', 'The event has been approved successfully.');
+                    },
+                    error: function() {
+                        console.log('Error occurred while updating event status.');
+                        // Show error alert
+                        showErrorAlert('Error', 'An error occurred while approving the event.');
+                    }
+                });
+            }
+        });
+    });  
+
+    // Update button visibility based on user status
+    $('.approve-button, .remove-button').each(function() {
+        var eventStatus = $(this).closest('tr').find('.event-status').text();
+        if (eventStatus == 'approved' || eventStatus == 'declined') {
+            $(this).hide();
+        }
+    });
+
+
     // Click event for displaying additional details
+    // $(document).on('click', '.event-details', function()  {
+    //     $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
+    // });
     $('.event-details').click(function() {
         $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
     });

@@ -48,7 +48,7 @@
         include('header_admin.php'); 
 
     ?>
-    
+    <link rel="stylesheet" href="../scss/style.css"> 
     <div class="facility">
         <div class="container">
             <div class="facility-wrapper">
@@ -181,23 +181,37 @@
             // Remove Button Click Event
             $('.remove-button').click(function() {
                 // Confirm removal action
-                if (confirm("Are you sure you want to remove this facility?")) {
-                    // Get facility ID from data attribute
-                    var facilityID = $(this).data('id');
-                    // Send AJAX request to update facility status
-                    $.ajax({
-                        url: 'facility_remove.php',
-                        type: 'POST',
-                        data: { facility_id: facilityID },
-                        success: function(response) {
-                            // Reload page or update UI as needed
-                            window.location.reload(); // Example: Reload the page after successful removal
-                        },
-                        error: function() {
-                            console.log('Error occurred while updating facility status.');
-                        }
-                    });
-                }
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You are about to remove this facility!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, remove it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Get facility ID from data attribute
+                        var facilityID = $(this).data('id');
+                        // Send AJAX request to update facility status
+                        $.ajax({
+                            url: 'facility_remove.php',
+                            type: 'POST',
+                            data: { facility_id: facilityID },
+                            success: function(response) {
+                                console.log('Remove AJAX Success:', response);
+                                showSuccessAlert('Facility Removed', 'The facility has been removed successfully.');
+                                // Reload page or update UI as needed
+                                window.location.reload(); // Example: Reload the page after successful removal
+                            },
+                            error: function() {
+                                console.log('Error occurred while updating facility status.');
+                                // Show error alert
+                                showErrorAlert('Error', 'An error occurred while removing the facility.');
+                            }
+                        });
+                    }
+                });
             });
         });
 

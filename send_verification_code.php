@@ -22,13 +22,13 @@ function sendVerificationCode($email, $verification_code) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com'; // SMTP server
         $mail->SMTPAuth = true; // Enable SMTP authentication
-        $mail->Username = 'frenzjonathan5958@gmail.com'; // SMTP username
-        $mail->Password = 'kdxr onib hnoc nldy'; // SMTP password
+        $mail->Username = 'bsuevent.scheduling@gmail.com'; // SMTP username
+        $mail->Password = 'dlko mvgy wiul fshr'; // SMTP password
         $mail->SMTPSecure = 'tls'; // Enable SSL encryption, 'tls' also accepted
         $mail->Port = 587; // TCP port to connect to
 
         // Set email sender and recipient
-        $mail->setFrom('frenzjonathan5958@gmail.com', 'Registration System');
+        $mail->setFrom('bsuevent.scheduling@gmail.com', 'Registration System');
         $mail->addAddress($email);
 
         // Set email subject and body

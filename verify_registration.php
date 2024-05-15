@@ -7,7 +7,7 @@
     include('header.php'); 
 
 ?>
-
+<link rel="stylesheet" href="scss/style.css"> 
 <div class="verifyReg">
     <div class="container">
         <div class="verifyReg-wrapper">

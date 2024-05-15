@@ -3,20 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image" href="../static/image/bsu_logo.png" />
     <title><?php echo $pageTitle; ?></title>
     <link rel="stylesheet" href="../scss/style.scss"> 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.all.min.js"></script>
     <script src="../script/alert.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display+swap" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <script src="https://kit.fontawesome.com/472320e0e2.js" crossorigin="anonymous"></script>
-    <!-- Include the jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Include SweetAlert2 CSS -->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11"> -->
-    <!-- Include SweetAlert2 JS -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
 
+    <style>
+        @media only screen and (max-width: 1024px) {
+            .header {
+                padding: 5px 20px;
+                .container {
+                .header-wrapper {
+                    .univ-head {
+                    margin-right: 230px;
+                    }
+                }
+                }
+            }
+            /* .navbar{
+                .container{
+                    .nav-wrapper{
+                        align-items: unset;
+                        height: 35px;
+                    }
+                } 
+            }*/
+        }
+        @media only screen and (max-width: 768px) {
+            .header {
+                padding: 5px 20px;
+                .container {
+                    .header-wrapper {
+                        .univ-head {
+                        margin-right: 100px;
+                        }
+                    }
+                }
+            }
+            /* .navbar{
+                .container{
+                    .nav-wrapper{
+                        align-items: unset;
+                        height: 75px;
+                    }
+                }
+            } */
+        }
+
+
+    </style>
 </head>
 
 <body>
@@ -38,6 +77,7 @@
                     <form action="../search.php" method="GET"> <!-- Change action to the PHP script handling search -->
                         <input type="text" name="event_code" placeholder="Search by Event Code...">
                         <button type="submit">Search</button>
+                        <button type="submit" class="hidden"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                  </div>
             </div>
@@ -53,12 +93,14 @@
                         <li><a href="./user_categ.php">Manage Users</a>
                             <ul class="submenu">
                                 <!-- <li><a href="">Users Accounts</a></li> -->
-                                <li><a href="">Users Data Logging</a></li>
+                                <!-- <li><a href="">Users Data Logging</a></li> -->
                             </ul>
                         </li>
                         <li><a href="./facility_categ.php">Manage Facilities</a></li>
+                        <li></li>
                         <li><a href="./device_categ.php">Manage Devices</a></li>
                         <li><a href="./depart_categ.php">Manage Department</a></li>
+                        <li></li>
                     </ul>
                 </nav>
             </div>

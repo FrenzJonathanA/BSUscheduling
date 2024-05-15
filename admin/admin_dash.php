@@ -18,6 +18,8 @@ if(isset($_GET['year'])){
     include('header_admin.php'); 
 
 ?>
+
+<link rel="stylesheet" href="../scss/style.css"> 
 <div class="admin-badge">
     <div class="container">
         <div class="abadge-wrapper">
@@ -76,8 +78,9 @@ if(isset($_GET['year'])){
     </div>
 </div>
 <?php 
-
+    include('footer_admin.php'); 
     ?>
+
 </body> 
 
 </html>

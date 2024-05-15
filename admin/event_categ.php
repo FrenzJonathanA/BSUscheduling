@@ -3,10 +3,12 @@
 
     try {
         // Query to select all users
-        $sql = "SELECT event_booking.*, facilities.facility_code, facilities.facility_name
+        $sql = "SELECT event_booking.*, facilities.facility_code, facilities.facility_name, user.first_name, user.last_name
                 FROM event_booking
-                Inner Join facilities
-                ON event_booking.facility_ID = facilities.facility_ID";
+                Inner Join facilities ON event_booking.facility_ID = facilities.facility_ID
+                Inner Join user ON event_booking.user_ID = user.user_ID ";
+                 
+               
         
         // Execute the query
         $result = mysqli_query($conn, $sql);
@@ -38,6 +40,8 @@
 
 ?>
 
+<link rel="stylesheet" href="../scss/style.css"> 
+
     <div class="event-badge">
         <div class="container">
             <div class="ebadge-wrapper">
@@ -53,7 +57,7 @@
                                 <p>Active Events</p>
                             </div>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="event_fetch.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
 
                     <!-- Pending Events -->
@@ -67,7 +71,7 @@
                                 <p>Pending Event Requests</p>
                             </div>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="event_fetch.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
 
                     <!-- declinced Events -->
@@ -81,7 +85,7 @@
                                 <p>Rejected Requests</p>
                             </div>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="event_fetch.php" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -164,8 +168,8 @@
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
-                    <?php foreach ($events as $event) : ?>
-                        <tr>
+                    <!--?php foreach ($events as $event) : ?-->
+                        <!-- <tr>
                             <td>
                                 <?php echo $event['event_code']; ?>
                             </td>
@@ -175,6 +179,7 @@
                                 <?php echo "<p><span>Event Venue: </span>" . $event['facility_code']; ?> - "<?php echo $event['facility_name'] . "</p>"; ?>
                                 <div class="additional-details" style="display: none;">
                                     <?php echo "<p><span>Event Purpose: </span><br>" . $event['event_purpose'] . "</p>"; ?> 
+                                    <?php echo "<p><span>Event Host: </span>" . $event['first_name'] . " " . $event['last_name'] . "</p>"; ?>
                                     <?php echo "<p><span>Event Participants: </span>" . $event['participants'] . "</p>"; ?>
                                 </div>
                             </td>
@@ -189,8 +194,65 @@
                                     <button class="approve-button" data-id="<?php echo $event['event_ID']; ?>">Approve</button>
                                 <?php endif; ?>
                             </td>
+                        </tr> -->
+                    <!--?php endforeach; ?-->
+
+
+
+
+                    <?php foreach ($events as $event) : ?>
+                        <tr>
+                            <td>
+                                <?php echo $event['event_code']; ?>
+                            </td>
+                            <td class="event-details">
+                                <?php echo "<p><span>Event Name: </span>" . $event['event_name'] . "</p>"; ?> 
+                                <?php echo "<p><span>Duration: </span>" . $event['start_from']; ?> - <?php echo $event['end_to'] . "</p>"; ?>
+                                <?php echo "<p><span>Event Venue: </span>" . $event['facility_code']; ?> - "<?php echo $event['facility_name'] . "</p>"; ?>
+                                <div class="additional-details" style="display: none;">
+                                    <?php echo "<p><span>Event Purpose: </span><br>" . $event['event_purpose'] . "</p>"; ?> 
+                                    <?php echo "<p><span>Event Host: </span>" . $event['first_name'] . " " . $event['last_name'] . "</p>"; ?>
+                                    <?php echo "<p><span>Event Participants: </span>" . $event['participants'] . "</p>"; ?>
+                                </div>
+                                <!-- Hidden element to store start datetime -->
+                                <span class="start-time" style="display: none;"><?php echo $event['start_from']; ?></span>
+                                <span class="end-time" style="display: none;"><?php echo $event['end_to']; ?></span>
+                            </td>
+                            <td><?php echo $event['event_status']; ?></td>
+                            <td>
+                                <?php if ($event['event_status'] == 'pending') : ?>
+                                    <button class="approve-button" style="margin-bottom:5px" data-id="<?php echo $event['event_ID']; ?>">Approve</button>
+                                    <button class="remove-button" data-id="<?php echo $event['event_ID']; ?>">Remove</button>
+                                <?php elseif ($event['event_status'] == 'approved') : ?>
+                                    <button class="remove-button" data-id="<?php echo $event['event_ID']; ?>">Remove</button>
+                                <?php elseif ($event['event_status'] == 'declined') : ?>
+                                    <button class="approve-button" data-id="<?php echo $event['event_ID']; ?>">Approve</button>
+                                <?php endif; ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 </table>
                 <div class="col-md-12">
                     <!-- <div class="well well-sm">
@@ -217,8 +279,8 @@
 
     <script>
        $(document).ready(function() {
-                    // Remove Button Click Event
-            $('.remove-button').click(function() {
+        // Remove Button Click Event
+        $(document).on('click', '.remove-button', function() {
                 // Confirm removal action
                 Swal.fire({
                     title: 'Are you sure?',
@@ -254,7 +316,7 @@
             });
 
             // Approve Button Click Event
-            $('.approve-button').click(function() {
+            $(document).on('click', '.approve-button', function() {
                 // Confirm approval action
                 Swal.fire({
                     title: 'Are you sure?',
@@ -397,15 +459,81 @@
             });
 
 
-                // Click event for displaying additional details
+            //     // Click event for displaying additional details
+            // $(document).on('click', '.event-details', function() {
+            //     $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
+            // });
             $('.event-details').click(function() {
                 $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
             });
 
 
 
-        });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Function to calculate time difference in minutes 
+            function getTimeDifference(startDateTime, endDateTime) {
+                var start = new Date(startDateTime);
+                var now = new Date();
+                var diff = Math.abs(start - now);
+                var minutesDifference = Math.floor((diff / 1000) / 60); // Difference in minutes
+
+                console.log('Start Datetime:', startDateTime);
+                console.log('Time Difference (minutes):', minutesDifference);
+
+                // Check if the event is about to start within 30 minutes
+                if (minutesDifference <= 30 && minutesDifference >= 0) {
+                    console.log('Event about to start.');
+                    return 'about-to-start';
+                }
+
+                // Check if the event is already done
+                var end = new Date(endDateTime);
+                var endPlusTen = new Date(end.getTime() + 10 * 60000); // Adding 10 minutes to the end time
+                if (now > endPlusTen) {
+                    console.log('Event already done.');
+                    return 'already-done';
+                }
+
+                return minutesDifference;
+            }
+
+            $('.event-details').each(function() {
+                var startDateTime = $(this).find('.start-time').text(); // Assuming you have a hidden element with class 'start-time' containing the start datetime
+                var endDateTime = $(this).find('.end-time').text(); // Assuming you have a hidden element with class 'end-time' containing the end datetime
+                
+                // Calculate time difference
+                var timeDifference = getTimeDifference(startDateTime, endDateTime);
+
+                // Apply appropriate class based on time difference
+                if (timeDifference === 'about-to-start') {
+                    $(this).addClass('about-to-start');
+                } else if (timeDifference === 'already-done') {
+                    $(this).addClass('already-done');
+                }
+            });
+
+           
+        });
 
 
     </script>

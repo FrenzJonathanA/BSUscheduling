@@ -47,7 +47,7 @@
         include('header_admin.php'); 
 
     ?>
-
+    <link rel="stylesheet" href="../scss/style.css"> 
     <div class="depart">
         <div class="container">
             <div class="depart-wrapper">
@@ -166,31 +166,41 @@
             });
         });
 
-        //remove button
-        $(document).ready(function() {
-            // Remove Button Click Event
-            $('.remove-button').click(function() {
-                // Confirm removal action
-                if (confirm("Are you sure you want to remove this department?")) {
+        $('.remove-button').click(function() {
+            // Confirm removal action
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You are about to remove this department!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, remove it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
                     // Get department ID from data attribute
                     var departmentID = $(this).data('id');
+                    console.log("Department ID:", departmentID); // Check if department ID is retrieved correctly
                     // Send AJAX request to update department status
                     $.ajax({
                         url: 'depart_remove.php',
                         type: 'POST',
                         data: { department_id: departmentID },
                         success: function(response) {
+                            console.log('Remove AJAX Success:', response);
+                            showSuccessAlert('department Removed', 'The event has been removed successfully.');
                             // Reload page or update UI as needed
-                            window.location.reload(); // Example: Reload the page after successful removal
+                            //window.location.reload(); // Example: Reload the page after successful removal
                         },
                         error: function() {
                             console.log('Error occurred while updating department status.');
+                            // Show error alert
+                            showErrorAlert('Error', 'An error occurred while removing the department.');
                         }
                     });
                 }
             });
         });
-
 
     </script>
     

@@ -9,7 +9,7 @@ if (isset($_POST['selectedDate'])) {
     $date_formatted = $date->format('Y-m-d'); // Format the date as 'Y-m-d'
 
     // Query to fetch events for the specified date
-    $query = "SELECT eb.event_code, eb.event_name, eb.event_purpose, eb.start_from, eb.end_to, eb.participants, eb.event_status, u.first_name, u.last_name AS host_last_name, f.facility_name
+    $query = "SELECT eb.event_code, eb.event_name, eb.event_purpose, eb.start_from, eb.end_to, eb.participants, eb.event_status, u.first_name, u.last_name AS host_last_name, f.facility_name, f.building_loc
               FROM event_booking AS eb
               INNER JOIN user AS u ON eb.user_ID = u.user_ID
               INNER JOIN facilities AS f ON eb.facility_ID = f.facility_ID
@@ -35,7 +35,8 @@ if (isset($_POST['selectedDate'])) {
             'event_status' => $row['event_status'],
             'host_first_name' => $row['first_name'],
             'host_last_name' => $row['host_last_name'],
-            'facility_name' => $row['facility_name']
+            'facility_name' => $row['facility_name'],
+            'building_loc' => $row['building_loc']
         );
     }
 

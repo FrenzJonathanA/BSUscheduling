@@ -45,6 +45,16 @@
         $result = $stmt->get_result();
         $event = $result->fetch_assoc();
 
+        // Fetch admin email address based on role
+        $adminRole = 'ADMIN'; // Adjust based on your role definition
+        $sqlAdmin = "SELECT email FROM user WHERE role = ?";
+        $stmtAdmin = $conn->prepare($sqlAdmin);
+        $stmtAdmin->bind_param("s", $adminRole);
+        $stmtAdmin->execute();
+        $resultAdmin = $stmtAdmin->get_result();
+        $admin = $resultAdmin->fetch_assoc();
+        $adminEmail = $admin['email'];
+
         // Create and send email
         $mail = new PHPMailer(true);
         try {
@@ -52,15 +62,16 @@
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'frenzjonathan5958@gmail.com';
-            $mail->Password = 'kdxr onib hnoc nldy';
+            $mail->Username = 'bsuevent.scheduling@gmail.com';
+            $mail->Password = 'dlko mvgy wiul fshr';
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
             //Recipients
-            $mail->setFrom('frenzjonathan5958@gmail.com', 'FRENZ JONATHAN V. ALULOD');
+            $mail->setFrom('bsuevent.scheduling@gmail.com', 'Registration System');
             $mail->addAddress($event['email']); // User's email address
-            $mail->addReplyTo('frenzjonathan5958@gmail.com', 'FRENZ JONATHAN V. ALULOD');
+            $mail->addReplyTo($adminEmail, 'ADMIN');
+           // $mail->addReplyTo('frenzjonathan5958@gmail.com', 'FRENZ JONATHAN V. ALULOD');
 
             // Content
             $mail->isHTML(true);

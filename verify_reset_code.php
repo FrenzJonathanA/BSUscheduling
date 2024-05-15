@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
+<link rel="stylesheet" href="scss/style.css"> 
 
 <div class="reset-pass">
     <div class="container">

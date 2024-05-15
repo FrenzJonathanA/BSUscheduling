@@ -3,7 +3,7 @@
     $pageTitle = "Event Search";
     include('header.php'); 
 ?>
-
+<link rel="stylesheet" href="scss/style.css"> 
 <div class="search">
     <div class="container">
         <div class="search-wrapper">
@@ -21,7 +21,7 @@
                 $event_code = mysqli_real_escape_string($conn, $_GET['event_code']);
 
                 // Prepare and execute the query to fetch event details by event_code
-                $sql = "SELECT event_booking.*, facilities.facility_code,  facilities.facility_name
+                $sql = "SELECT event_booking.*, facilities.facility_code,  facilities.facility_name, facilities.building_loc
                         FROM event_booking 
                         INNER JOIN facilities ON event_booking.Facility_ID = facilities.facility_ID 
                         WHERE event_booking.event_code = ?";
@@ -73,14 +73,18 @@
                         
                         echo "<tr>";
                         echo "<td>Event Facility:</td>";
-                        echo "<td class='facility'>" . $row['facility_code'] .' - ' . $row['facility_name'] . " <button class='navigate-button'>Navigate</button></td>";
+                        echo "<td class='facility'>" . $row['facility_name'] .' - ' . $row['building_loc'] . " <button class='navigate-button' id='navigate-" . $row['event_ID'] . "' onclick='openMap(" . $row['event_ID'] . ")'>Navigate</button></td>";
                         echo "</tr>";
                         
                     }
 
                     echo "</table>"; // Close the table
                 } else {
-                    echo "No event found with the provided event code.";
+                    echo "<table id='eventDetailsTable' style='width: 100%; border-collapse: collapse;'>
+                            <tr>
+                                <td colspan='2' style='text-align:center;'>No event found with the provided event code.</td>
+                            </tr>
+                        </table>";
                 }
 
                 // Close prepared statement and database connection
@@ -93,6 +97,15 @@
         <button class="return-button" onclick="goBack()">Return <i class="fa-solid fa-right-from-bracket"></i></button>
         
         <script>
+
+            function openMap(id) {
+                var mapUrl = 'http://192.168.18.39:5173/';
+                if (id) {
+                mapUrl += '?id=' + id;
+                }
+                window.open(mapUrl, '_blank');
+            }
+
             function goBack() {
             window.history.back();
             }

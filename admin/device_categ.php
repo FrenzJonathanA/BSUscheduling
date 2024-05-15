@@ -47,6 +47,8 @@
         include('header_admin.php'); 
 
     ?>
+    
+    <link rel="stylesheet" href="../scss/style.css"> 
 
     <div class="device">
         <div class="container">
@@ -184,50 +186,69 @@
     ?>
 
     <script>
-// Edit button click event
-$(document).ready(function() {
-    $('.edit-button').click(function() {
-        var deviceID = $(this).data('id');
-        var deviceName = $(this).data('name');
-        var facilityID = $(this).data('fid'); // Corrected to 'fid'
-        var facilityCode = $(this).data('fcode'); // Added facility code
+        // Edit button click event
+        $(document).ready(function() {
+            $('.edit-button').click(function() {
+                var deviceID = $(this).data('id');
+                var deviceName = $(this).data('name');
+                var facilityID = $(this).data('fid'); // Corrected to 'fid'
+                var facilityCode = $(this).data('fcode'); // Added facility code
 
-        console.log('Device ID:', deviceID);
-        console.log('Device Name:', deviceName);
-        console.log('Facility ID:', facilityID);
-        console.log('Facility Code:', facilityCode);
+                console.log('Device ID:', deviceID);
+                console.log('Device Name:', deviceName);
+                console.log('Facility ID:', facilityID);
+                console.log('Facility Code:', facilityCode);
 
-        // Populate form fields
-        $('#device_name').val(deviceName);
-        $('#device_ID').val(deviceID);
-        
-        // Set the selected option in the dropdown based on the facility ID
-        $('#facility_ID').val(facilityID); 
-        
-        // Show update button, hide add button
-        $('#update-device-button').show();
-        $('#add-device-button').hide();
-    });
-});
+                // Populate form fields
+                $('#device_name').val(deviceName);
+                $('#device_ID').val(deviceID);
+                
+                // Set the selected option in the dropdown based on the facility ID
+                $('#facility_ID').val(facilityID); 
+                
+                // Show update button, hide add button
+                $('#update-device-button').show();
+                $('#add-device-button').hide();
+            });
+        });
 
 
-        // Remove button click event
+                // Remove button click event
         $(document).ready(function() {
             $('.remove-button').click(function() {
-                if (confirm("Are you sure you want to remove this device?")) {
-                    var deviceID = $(this).data('id');
-                    $.ajax({
-                        url: 'device_remove.php',
-                        type: 'POST',
-                        data: { device_id: deviceID },
-                        success: function(response) {
-                            window.location.reload(); // Reload page after successful removal
-                        },
-                        error: function() {
-                            console.log('Error occurred while updating device status.');
-                        }
-                    });
-                }
+                // Confirm removal action
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You are about to remove this device!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, remove it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Get device ID from data attribute
+                        var deviceID = $(this).data('id');
+                        console.log("Device ID:", deviceID); // Check if device ID is retrieved correctly
+                        // Send AJAX request to update device status
+                        $.ajax({
+                            url: 'device_remove.php',
+                            type: 'POST',
+                            data: { device_id: deviceID },
+                            success: function(response) {
+                                console.log('Remove AJAX Success:', response);
+                                showSuccessAlert('Device Removed', 'The device has been removed successfully.');
+                                // Reload page or update UI as needed
+                                window.location.reload(); // Example: Reload the page after successful removal
+                            },
+                            error: function() {
+                                console.log('Error occurred while updating device status.');
+                                // Show error alert
+                                showErrorAlert('Error', 'An error occurred while removing the device.');
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>

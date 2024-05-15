@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image" href="../static/image/bsu_logo.png" />
     <title><?php echo $pageTitle; ?></title>
     <link rel="stylesheet" href="../scss/style.scss"> 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.all.min.js"></script>
@@ -35,6 +36,7 @@
                     <form action="../search.php" method="GET"> <!-- Change action to the PHP script handling search -->
                         <input type="text" name="event_code" placeholder="Search by Event Code...">
                         <button type="submit">Search</button>
+                        <button type="submit" class="hidden"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                  </div>
             </div>

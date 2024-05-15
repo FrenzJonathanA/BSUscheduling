@@ -37,7 +37,7 @@
     include('header_staff.php'); 
 
 ?>
-
+<link rel="stylesheet" href="../scss/style.css"> 
     <div class="event-badge">
         <div class="container">
             <div class="ebadge-wrapper">
@@ -195,11 +195,10 @@
     include('footer_staff.php'); 
 
     ?>
-
     <script>
        $(document).ready(function() {
-            // Remove Button Click Event
-            $('.remove-button').click(function() {
+        // Remove Button Click Event
+        $(document).on('click', '.remove-button', function() {
                 // Confirm removal action
                 Swal.fire({
                     title: 'Are you sure?',
@@ -235,7 +234,7 @@
             });
 
             // Approve Button Click Event
-            $('.approve-button').click(function() {
+            $(document).on('click', '.approve-button', function() {
                 // Confirm approval action
                 Swal.fire({
                     title: 'Are you sure?',
@@ -268,7 +267,7 @@
                         });
                     }
                 });
-            });
+            });  
 
             // Update button visibility based on user status
             $('.approve-button, .remove-button').each(function() {
@@ -280,22 +279,26 @@
 
 
 
-
-
              // Function to fetch and display event details based on status
-             function fetchEventDetails(status) {
-                $.ajax({
-                    url: 'event_fetch.php',
-                    type: 'GET',
-                    data: { status: status },
-                    success: function(response) {
-                        $('#eventDetailsTable tbody').html(response);
-                    },
-                    error: function() {
-                        console.log('Error occurred while fetching event details.');
-                    }
-                });
+             // Function to fetch and display event details based on status
+            function fetchEventDetails(status) {
+                // Check if status is provided
+                if (status) {
+                    $.ajax({
+                        url: 'event_fetch.php',
+                        type: 'GET',
+                        data: { status: status },
+                        success: function(response) {
+                            $('#eventDetailsTable tbody').html(response);
+                            console.log('current status.', status);
+                        },
+                        error: function() {
+                            console.log('Error occurred while fetching event details.');
+                        }
+                    });
+                }
             }
+
 
             // Function to fetch and update user counts
             function fetchEventCounts() {
@@ -324,10 +327,6 @@
             fetchEventCounts();
 
 
-
-
-
-            
             // Submit form using AJAX
             $('#search-form').submit(function(event) {
                 event.preventDefault(); // Prevent default form submission
@@ -378,12 +377,13 @@
             });
 
 
-
-                // Click event for displaying additional details
+            //     // Click event for displaying additional details
+            // $(document).on('click', '.event-details', function() {
+            //     $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
+            // });
             $('.event-details').click(function() {
                 $(this).find('.additional-details').toggle(); // Toggle visibility of additional details
             });
-
         });
 
 

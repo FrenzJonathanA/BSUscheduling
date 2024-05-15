@@ -74,7 +74,7 @@
 <script>
     $(document).ready(function() {
         // Remove Button Click Event
-        $('.remove-button').click(function() {
+        $(document).on('click', '.remove-button', function() {
             // Confirm removal action
             Swal.fire({
                 title: 'Are you sure?',
@@ -110,7 +110,7 @@
         });
 
         // Approve Button Click Event
-        $('.approve-button').click(function() {
+        $(document).on('click', '.approve-button', function() {
             // Confirm approval action
             Swal.fire({
                 title: 'Are you sure?',

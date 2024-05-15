@@ -6,7 +6,7 @@
     
     ?> 
 
-    
+    <link rel="stylesheet" href="scss/style.css"> 
     <div class="log-form">
         <div class="container">
             <div class="log-wrapper">
@@ -23,10 +23,12 @@
                         <input type="checkbox" id="showPassword"> Show Password<br>
                     </div>
 
-                    
                     <button type="submit">Login</button>
                     
                 </form>
+                <!-- <p style="text-align: center;">---------------- or ---------------</p>
+                <a href="cal-sample.php" style="text-decoration: none;"><button>Face Login</button></a> -->
+
                 <?php
                     // Check if error message is set in session
                     if (isset($_SESSION['error_message'])) {

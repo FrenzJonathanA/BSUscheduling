@@ -34,6 +34,7 @@ try {
     include('header_admin.php'); 
 
 ?>
+<link rel="stylesheet" href="../scss/style.css"> 
 
     <div class="user-badge">
         <div class="container">
@@ -149,7 +150,7 @@ try {
     <script>
        $(document).ready(function() {
         // Remove Button Click Event
-            $('.remove-button').click(function() {
+        $(document).on('click', '.remove-button', function(){
                 // Confirm removal action
                 Swal.fire({
                     title: 'Are you sure?',
@@ -184,7 +185,7 @@ try {
             });
 
             // Approve Button Click Event
-            $('.approve-button').click(function() {
+            $(document).on('click', '.approve-button', function() {
                 // Confirm approval action
                 Swal.fire({
                     title: 'Are you sure?',
@@ -238,6 +239,7 @@ try {
                     data: { status: status },
                     success: function(response) {
                         $('#userDetailsTable tbody').html(response);
+                        console.log('current status.', status);
                     },
                     error: function() {
                         console.log('Error occurred while fetching user details.');

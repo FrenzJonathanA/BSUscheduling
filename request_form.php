@@ -4,7 +4,7 @@
     
     include('header.php'); 
 ?>
-
+<link rel="stylesheet" href="scss/style.css"> 
 <div class="request">
     <div class="container">
         <div class="req-wrapper">
@@ -82,11 +82,12 @@
                     <label for="participants">Participants:</label>
                     <input type="text" id="participants" name="participants" required>
                 </div>
-                <div class="req-button">
-                    <a href=""><button type="submit">Submit</button></a>
-                    <a href="cal-sample.php"><button type="submit">View Calendar</button></a>
-                </div>
+                
             </form>
+            <div class="req-button">
+                <a href=""><button type="submit">Submit</button></a>
+                <a href="cal-sample.php"><button type="submit">View Calendar</button></a>
+            </div>
         </div>
     </div>
 </div>

@@ -1,0 +1,38 @@
+<?php
+
+require __DIR__ . '/../database/con_db.php';
+
+// Get posted image data
+$imageData = json_decode(file_get_contents('php://input'), true)['facial_image'];
+
+// Save image to file
+$imagePath = 'captured_image.jpg';
+if (!file_put_contents($imagePath, base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageData)))) {
+    // Error saving image
+    echo json_encode(['success' => false, 'error' => 'Failed to save image']);
+    exit;
+}
+
+// Perform necessary actions with the image (e.g., call Python script, save to database, etc.)
+// Here, we'll save the image path to the database
+
+// Prepare SQL statement to insert image path into the user table
+$stmt = $conn->prepare("UPDATE user SET facial_image = ? WHERE user_id = ?");
+
+// Set the parameters and execute the statement
+$user_id = 7; // Assuming user_id 1 for demonstration purposes
+$stmt->bind_param("si", $imagePath, $user_id);
+if (!$stmt->execute()) {
+    // Error executing SQL statement
+    echo json_encode(['success' => false, 'error' => 'Failed to update user image']);
+    exit;
+}
+
+// Close statement and database connection
+$stmt->close();
+$conn->close();
+
+// Image saved and database updated successfully
+echo json_encode(['success' => true]);
+
+?>

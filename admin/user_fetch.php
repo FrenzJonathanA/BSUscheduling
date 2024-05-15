@@ -13,8 +13,9 @@ if (isset($_GET['status'])) {
     $stmt->bind_param("s", $status);
     $stmt->execute();
     $result = $stmt->get_result();
+
     // Output table headers
-    echo " <table style='width: 100%; border-collapse: collapse;'>";
+    echo " <table id='userDetailsTable' style='width: 100%; border-collapse: collapse;'>";
     echo "<tr><th>User's Name</th><th>Email</th><th>Role</th><th>Contact Number</th><th>Employee ID</th><th>Status</th><th>Action</th></tr>";
 
     // Check if any rows are returned
@@ -22,23 +23,23 @@ if (isset($_GET['status'])) {
         // Display user details in table format
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
-            echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
-            echo "<td>" . $row['email'] . "</td>";
-            echo "<td>" . $row['role'] . "</td>";
-            echo "<td>" . $row['contact_number'] . "</td>";
-            echo "<td>" . $row['employee_ID'] . "</td>";
-            echo "<td>" . $row['user_status'] . "</td>";
-            echo "<td>";
-            // Determine button display based on user status
-                if ($row['user_status'] == 'Pending') {
-                    echo "<button class='approve-button' style='margin-bottom: 5px' data-id='" . $row['user_ID'] . "'>Approve</button>";
-                    echo "<button class='remove-button' data-id='" . $row['user_ID'] . "'>Remove</button>";
-                } elseif ($row['user_status'] == 'Active') {
-                    echo "<button class='remove-button' data-id='" . $row['user_ID'] . "'>Remove</button>";
-                } elseif ($row['user_status'] == 'Rejected') {
-                    echo "<button class='approve-button' data-id='" . $row['user_ID'] . "'>Approve</button>";
-                }
-            echo "</td>";
+                echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
+                echo "<td>" . $row['email'] . "</td>";
+                echo "<td>" . $row['role'] . "</td>";
+                echo "<td>" . $row['contact_number'] . "</td>";
+                echo "<td>" . $row['employee_ID'] . "</td>";
+                echo "<td>" . $row['user_status'] . "</td>";
+                echo "<td>";
+                // Determine button display based on user status
+                    if ($row['user_status'] == 'Pending') {
+                        echo "<button class='approve-button' style='margin-bottom: 5px' data-id='" . $row['user_ID'] . "'>Approve</button>";
+                        echo "<button class='remove-button' data-id='" . $row['user_ID'] . "'>Remove</button>";
+                    } elseif ($row['user_status'] == 'Active') {
+                        echo "<button class='remove-button' data-id='" . $row['user_ID'] . "'>Remove</button>";
+                    } elseif ($row['user_status'] == 'Rejected') {
+                        echo "<button class='approve-button' data-id='" . $row['user_ID'] . "'>Approve</button>";
+                    }
+                echo "</td>";
             echo "</tr>";
         }
     } else {
@@ -59,7 +60,7 @@ if (isset($_GET['status'])) {
 <script>
        $(document).ready(function() {
             // Remove Button Click Event
-            $('.remove-button').click(function() {
+            $(document).on('click', '.remove-button', function(){
                 // Confirm removal action
                 Swal.fire({
                     title: 'Are you sure?',
@@ -94,7 +95,7 @@ if (isset($_GET['status'])) {
             });
 
             // Approve Button Click Event
-            $('.approve-button').click(function() {
+            $(document).on('click', '.approve-button', function() {
                 // Confirm approval action
                 Swal.fire({
                     title: 'Are you sure?',
@@ -127,7 +128,6 @@ if (isset($_GET['status'])) {
                     }
                 });
             });
-
             // Update button visibility based on user status
             $('.approve-button, .remove-button').each(function() {
                 var userStatus = $(this).closest('tr').find('.user-status').text();

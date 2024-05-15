@@ -7,7 +7,7 @@
     
     ?>
 
-
+<link rel="stylesheet" href="scss/style.css"> 
 
     <div class="request">
         <div class="container">
